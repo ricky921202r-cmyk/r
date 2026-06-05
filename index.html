@@ -105,8 +105,6 @@
     <button class="day-btn" data-day="3"><div class="day-num">第3天</div><div class="day-date">1/9</div><div class="day-week">週四</div></button>
     <button class="day-btn" data-day="4"><div class="day-num">第4天</div><div class="day-date">1/10</div><div class="day-week">週五</div></button>
     <button class="day-btn" data-day="5"><div class="day-num">第5天</div><div class="day-date">1/11</div><div class="day-week">週六</div></button>
-    <button class="day-btn" data-day="6"><div class="day-num">第6天</div><div class="day-date">1/12</div><div class="day-week">週日</div></button>
-    <button class="day-btn" data-day="7"><div class="day-num">第7天</div><div class="day-date">1/13</div><div class="day-week">週一</div></button>
   </div>
 
   <div id="day-card">
@@ -191,8 +189,8 @@ function renderSchedules() {
 
 function updateDayCard() {
   const d = dayData[selectedDay];
-  const dates = ["1/7","1/8","1/9","1/10","1/11","1/12","1/13"];
-  const weeks = ["週二","週三","週四","週五","週六","週日","週一"];
+  const dates = ["8/11","8/11","8/13","8/14","8/15"];
+  const weeks = ["週二","週三","週四","週五","週六"];
   document.getElementById("day-title").textContent = `第${selectedDay}天 – ${dates[selectedDay-1]}（${weeks[selectedDay-1].slice(1)}）${d.title}`;
   const hotel = document.getElementById("day-hotel");
   hotel.textContent = d.hotel;
