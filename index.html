@@ -458,8 +458,9 @@ document.querySelectorAll(".nav-btn").forEach(btn => {
 } else {
   // 其他還沒設定的按鈕，顯示預設文字
   info.textContent = btn.dataset.info + " 的相關資訊可在此填寫或補充內容。";
+  info.classList.add("show");
 }
-      info.classList.add("show");
+      
     }
   });
 });
