@@ -368,11 +368,16 @@ function getNavContent(name) {
   }
 
   if (name === "匯率換算") {
-    setTimeout(async () => {
+    if (cachedRates) {
+      return buildRateHtml(cachedRates, null);
+    }
+    (async () => {
       const info = document.getElementById("nav-info");
-      if (!info.classList.contains("show")) return;
       try {
         const json = await callScript({ action: "rate" });
+        // 確認使用者還在看匯率頁才更新，避免覆蓋其他按鈕內容
+        const activeBtn = document.querySelector(".nav-btn.active");
+        if (!activeBtn || activeBtn.dataset.info !== "匯率換算") return;
         if (json.success && json.rates) {
           cachedRates = json.rates;
           info.innerHTML = buildRateHtml(json.rates, json.updatedAt);
@@ -380,9 +385,11 @@ function getNavContent(name) {
           info.innerHTML = `<div style="color:#c0705a;font-size:13px;">❌ 匯率載入失敗，請稍後再試</div>`;
         }
       } catch (e) {
+        const activeBtn = document.querySelector(".nav-btn.active");
+        if (!activeBtn || activeBtn.dataset.info !== "匯率換算") return;
         info.innerHTML = `<div style="color:#c0705a;font-size:13px;">❌ 載入失敗：${e.message}</div>`;
       }
-    }, 100);
+    })();
     return `<div class="rate-card"><div class="rate-loading">⏳ 載入台灣銀行即時匯率中…</div></div>`;
   }
 
