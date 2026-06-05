@@ -6,8 +6,8 @@
   <title>琉球旅遊計畫</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: Georgia, 'Noto Serif TC', serif; background: #c4eff5; color: #f56262; min-height: 100vh; }
-    #toast { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); padding: 10px 22px; border-radius: 20px; font-size: 13px; color: #c4eff5; z-index: 999; box-shadow: 0 4px 16px rgba(0,0,0,0.15); display: none; white-space: nowrap; }
+    body { font-family: Georgia, 'Noto Serif TC', serif; background: #c4eff5; color: #5a4a3a; min-height: 100vh; }
+    #toast { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); padding: 10px 22px; border-radius: 20px; font-size: 13px; color: #fff; z-index: 999; box-shadow: 0 4px 16px rgba(0,0,0,0.15); display: none; white-space: nowrap; }
     #modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 1000; }
     #modal-overlay.show { display: flex; }
     #modal-box { background: #fff; border-radius: 20px; padding: 28px 24px; width: 300px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); }
@@ -22,7 +22,7 @@
     header { background: #c4eff5; text-align: center; padding: 40px 20px 24px; border-bottom: 1px solid #e8d8c4; }
     header h1 { font-size: 28px; font-weight: 700; letter-spacing: 2px; color: #6b5240; margin-bottom: 6px; }
     header .date { font-size: 14px; color: #9e8570; margin-bottom: 6px; }
-    header .sync-info { font-size: 11px; color:  ; }
+    header .sync-info { font-size: 11px; color: #c0a880; }
     main { padding: 20px 16px 0; max-width: 480px; margin: 0 auto; }
     .nav-row { display: flex; justify-content: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
     .nav-btn { padding: 8px 16px; border: 1.5px solid #c9a87a; border-radius: 20px; background: transparent; color: #8a6a4a; font-size: 13px; cursor: pointer; font-family: inherit; transition: all 0.2s; }
@@ -52,8 +52,27 @@
     #add-form .form-title { font-size: 14px; font-weight: 600; color: #7a5c3a; margin-bottom: 12px; }
     #add-form input { width: 100%; padding: 12px 14px; border: 1px solid #e0cdb4; border-radius: 10px; margin-bottom: 10px; font-size: 13px; color: #5a4a3a; background: #fff; outline: none; font-family: inherit; }
     #btn-add { width: 100%; padding: 12px; background: #f56262; color: #fff; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; margin-top: 4px; transition: background 0.2s; }
-    #btn-add:disabled { background: #f56262; cursor: not-allowed; }
+    #btn-add:disabled { background: #f5a0a0; cursor: not-allowed; }
     #pwd-saved { font-size: 11px; color: #9e8570; text-align: center; margin-top: 8px; display: none; }
+    /* 匯率 */
+    .rate-card { background: #fff; border-radius: 14px; padding: 18px; box-shadow: 0 2px 8px rgba(180,140,100,0.1); }
+    .rate-card-title { font-size: 15px; font-weight: 700; color: #6b5240; margin-bottom: 4px; }
+    .rate-updated { font-size: 11px; color: #c0a880; margin-bottom: 14px; }
+    .rate-table { width: 100%; border-collapse: collapse; }
+    .rate-table th { font-size: 11px; color: #9e8570; text-align: right; padding: 0 0 8px; font-weight: normal; }
+    .rate-table th:first-child { text-align: left; }
+    .rate-table td { font-size: 14px; color: #5a4a3a; padding: 8px 0; border-top: 1px solid #f0e8dc; text-align: right; }
+    .rate-table td:first-child { text-align: left; }
+    .rate-name { font-weight: 600; color: #6b5240; }
+    .rate-code { font-size: 11px; color: #9e8570; display: block; }
+    .rate-sell { color: #b8966a; font-weight: 700; }
+    .rate-loading { text-align: center; color: #c0a880; font-size: 13px; padding: 16px 0; }
+    .rate-calc { margin-top: 16px; padding-top: 16px; border-top: 1px solid #f0e8dc; }
+    .rate-calc-title { font-size: 13px; color: #7a5c3a; font-weight: 600; margin-bottom: 10px; }
+    .calc-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+    .calc-row input { flex: 1; padding: 10px 12px; border: 1px solid #e0cdb4; border-radius: 10px; font-size: 14px; outline: none; font-family: inherit; color: #5a4a3a; }
+    .calc-row select { padding: 10px 8px; border: 1px solid #e0cdb4; border-radius: 10px; font-size: 13px; outline: none; font-family: inherit; color: #5a4a3a; background: #fff; }
+    .calc-result { background: #f0e8dc; border-radius: 10px; padding: 12px 14px; font-size: 14px; color: #6b5240; font-weight: 600; text-align: center; }
   </style>
 </head>
 <body>
@@ -125,16 +144,14 @@
 </main>
 
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzAnPW_x5fto9YKSaA61fpDWZnZk0EACZEcS_qg_LrGIEsaxzq6s7sf85mHdvH5ojNGRg/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyh1ghR4w-Gfrif9DVJZMZSIlupEP_jxtmmwrg_-eHrSTcmsng4hNpo-HDY9pHFbRybQw/exec";
 
 const dayData = {
-  1: { title: "抵達韓國", hotel: "住宿：VIVALDI PARK 渡假村" },
-  2: { title: "首爾市區探索", hotel: "住宿：首爾市區飯店" },
-  3: { title: "景福宮 & 仁寺洞", hotel: "住宿：首爾市區飯店" },
-  4: { title: "弘大 & 梨泰院", hotel: "住宿：首爾市區飯店" },
-  5: { title: "南山塔 & 明洞", hotel: "住宿：首爾市區飯店" },
-  6: { title: "江南 & 東大門", hotel: "住宿：首爾市區飯店" },
-  7: { title: "返回台灣", hotel: "" },
+  1: { title: "抵達琉球", hotel: "住宿：那霸市區飯店" },
+  2: { title: "首里城 & 國際通", hotel: "住宿：那霸市區飯店" },
+  3: { title: "美麗海水族館", hotel: "住宿：那霸市區飯店" },
+  4: { title: "離島探索", hotel: "住宿：那霸市區飯店" },
+  5: { title: "返回台灣", hotel: "" },
 };
 
 let selectedDay = 1;
@@ -142,13 +159,14 @@ let schedules = {};
 let savedPassword = "";
 let pendingAction = null;
 let saving = false;
+let cachedRates = null;
 
 function callScript(params) {
   return new Promise((resolve, reject) => {
     const cbName = "cb_" + Date.now();
     const url = SCRIPT_URL + "?" + new URLSearchParams({ ...params, callback: cbName });
     const script = document.createElement("script");
-    const timeout = setTimeout(() => { cleanup(); reject(new Error("逾時，請檢查網路")); }, 10000);
+    const timeout = setTimeout(() => { cleanup(); reject(new Error("逾時，請檢查網路")); }, 15000);
     window[cbName] = (data) => { cleanup(); resolve(data); };
     function cleanup() { clearTimeout(timeout); delete window[cbName]; if (script.parentNode) script.parentNode.removeChild(script); }
     script.onerror = () => { cleanup(); reject(new Error("網路錯誤")); };
@@ -189,7 +207,7 @@ function renderSchedules() {
 
 function updateDayCard() {
   const d = dayData[selectedDay];
-  const dates = ["8/11","8/11","8/13","8/14","8/15"];
+  const dates = ["8/11","8/12","8/13","8/14","8/15"];
   const weeks = ["週二","週三","週四","週五","週六"];
   document.getElementById("day-title").textContent = `第${selectedDay}天 – ${dates[selectedDay-1]}（${weeks[selectedDay-1].slice(1)}）${d.title}`;
   const hotel = document.getElementById("day-hotel");
@@ -204,7 +222,7 @@ async function fetchSchedules() {
     (json.data || []).forEach(row => {
       const d = parseInt(row.day);
       if (!grouped[d]) grouped[d] = [];
-      grouped[d].push({ id: String(row.id), time: row.time, activity: row.activity, location: row.location || "" });
+      grouped[d].push({ id: String(row.id), time: String(row.time), activity: row.activity, location: row.location || "" });
     });
     schedules = grouped;
     renderSchedules();
@@ -228,9 +246,7 @@ async function executeAction(action, pwd) {
         document.getElementById("input-activity").value = "";
         document.getElementById("input-location").value = "";
         showToast("✓ 行程已儲存！");
-      } else {
-        showToast("✓ 行程已刪除");
-      }
+      } else { showToast("✓ 行程已刪除"); }
       await fetchSchedules();
     } else {
       if (json.error === "密碼錯誤") {
@@ -238,9 +254,7 @@ async function executeAction(action, pwd) {
         document.getElementById("pwd-saved").style.display = "none";
         showToast("❌ 密碼錯誤", "#c0705a");
         pendingAction = action; openModal();
-      } else {
-        showToast("❌ " + (json.error || "操作失敗"), "#c0705a");
-      }
+      } else { showToast("❌ " + (json.error || "操作失敗"), "#c0705a"); }
     }
   } catch (e) {
     showToast("操作失敗：" + e.message, "#c0705a");
@@ -286,7 +300,47 @@ function confirmModal() {
   pendingAction = null;
 }
 
-// ===== Nav 按鈕（在這裡新增各按鈕內容）=====
+// ===== 匯率 =====
+function calcRate() {
+  if (!cachedRates) return;
+  const amount = parseFloat(document.getElementById("calc-amount").value) || 0;
+  const code = document.getElementById("calc-currency").value;
+  const rate = cachedRates.find(r => r.code === code);
+  if (!rate) return;
+  const twdToForeign = (amount / parseFloat(rate.sell)).toFixed(2);
+  const foreignToTwd = (amount * parseFloat(rate.sell)).toFixed(0);
+  document.getElementById("calc-result").innerHTML = `
+    <div style="margin-bottom:6px;">台幣 ${amount.toLocaleString()} 元 ＝ ${twdToForeign} ${code}</div>
+    <div>${amount} ${code} ＝ 台幣 ${parseInt(foreignToTwd).toLocaleString()} 元</div>`;
+}
+
+function buildRateHtml(rates, updatedAt) {
+  const options = rates.map(r => `<option value="${r.code}">${r.name}（${r.code}）</option>`).join("");
+  const rows = rates.map(r => `
+    <tr>
+      <td><span class="rate-name">${r.name}</span><span class="rate-code">${r.code}</span></td>
+      <td>${r.buy}</td>
+      <td class="rate-sell">${r.sell}</td>
+    </tr>`).join("");
+  return `<div class="rate-card">
+    <div class="rate-card-title">💱 台灣銀行即時匯率</div>
+    <div class="rate-updated">更新時間：${updatedAt || "載入中"}</div>
+    <table class="rate-table">
+      <thead><tr><th>幣別</th><th>買入</th><th>賣出</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div class="rate-calc">
+      <div class="rate-calc-title">💰 快速換算</div>
+      <div class="calc-row">
+        <input type="number" id="calc-amount" placeholder="輸入金額" oninput="calcRate()" />
+        <select id="calc-currency" onchange="calcRate()">${options}</select>
+      </div>
+      <div class="calc-result" id="calc-result">輸入金額後自動換算</div>
+    </div>
+  </div>`;
+}
+
+// ===== Nav 按鈕內容 =====
 function getNavContent(name) {
   if (name === "機票資訊") {
     return `<div style="display:flex;flex-direction:column;gap:16px;">
@@ -295,9 +349,9 @@ function getNavContent(name) {
         <div style="font-size:13px;color:#7a5c3a;margin-bottom:4px;">日期：2026/08/11</div>
         <div style="font-size:13px;color:#7a5c3a;margin-bottom:12px;">航班：星宇航空 JX870</div>
         <div style="display:flex;align-items:center;justify-content:space-between;">
-          <div><div style="font-size:11px;color:#9e8570;">起飛</div><div style="font-size:22px;font-weight:700;color:#b8966a;">12:00</div><div style="font-size:12px;color:#9e8570;">臺灣桃園國際機場第一航廈</div></div>
+          <div><div style="font-size:11px;color:#9e8570;">起飛</div><div style="font-size:22px;font-weight:700;color:#b8966a;">12:00</div><div style="font-size:12px;color:#9e8570;">桃園 T1</div></div>
           <div style="color:#c9a87a;font-size:20px;">→</div>
-          <div style="text-align:right;"><div style="font-size:11px;color:#9e8570;">抵達</div><div style="font-size:22px;font-weight:700;color:#b8966a;">14:40</div><div style="font-size:12px;color:#9e8570;"> 那霸國際機場 國際航廈</div></div>
+          <div style="text-align:right;"><div style="font-size:11px;color:#9e8570;">抵達</div><div style="font-size:22px;font-weight:700;color:#b8966a;">14:40</div><div style="font-size:12px;color:#9e8570;">那霸 國際航廈</div></div>
         </div>
       </div>
       <div style="background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(180,140,100,0.1)">
@@ -305,40 +359,44 @@ function getNavContent(name) {
         <div style="font-size:13px;color:#7a5c3a;margin-bottom:4px;">日期：2026/08/15</div>
         <div style="font-size:13px;color:#7a5c3a;margin-bottom:12px;">航班：星宇航空 JX870</div>
         <div style="display:flex;align-items:center;justify-content:space-between;">
-          <div><div style="font-size:11px;color:#9e8570;">起飛</div><div style="font-size:22px;font-weight:700;color:#b8966a;">15:50</div><div style="font-size:12px;color:#9e8570;">那霸國際機場 國際航廈</div></div>
+          <div><div style="font-size:11px;color:#9e8570;">起飛</div><div style="font-size:22px;font-weight:700;color:#b8966a;">15:50</div><div style="font-size:12px;color:#9e8570;">那霸 國際航廈</div></div>
           <div style="color:#c9a87a;font-size:20px;">→</div>
-          <div style="text-align:right;"><div style="font-size:11px;color:#9e8570;">抵達</div><div style="font-size:22px;font-weight:700;color:#b8966a;">16:25</div><div style="font-size:12px;color:#9e8570;">臺灣桃園國際機場第一航廈</div></div>
+          <div style="text-align:right;"><div style="font-size:11px;color:#9e8570;">抵達</div><div style="font-size:22px;font-weight:700;color:#b8966a;">16:25</div><div style="font-size:12px;color:#9e8570;">桃園 T1</div></div>
         </div>
       </div>
     </div>`;
   }
-  // 其他按鈕預設文字（之後可在這裡繼續新增）
-  return `<span>${name} 的相關資訊可補充。</span>`;
-  if (name === "行前準備") {
-    return `行前準備的內容`;
-  }
-  if (name === "必備App") {
-    return `行前準備的內容`;
-  }
-  if (name === "旅遊須知") {
-    return `行前準備的內容`;
-  }
+
   if (name === "匯率換算") {
-    return `行前準備的內容`;
+    setTimeout(async () => {
+      const info = document.getElementById("nav-info");
+      if (!info.classList.contains("show")) return;
+      try {
+        const json = await callScript({ action: "rate" });
+        if (json.success && json.rates) {
+          cachedRates = json.rates;
+          info.innerHTML = buildRateHtml(json.rates, json.updatedAt);
+        } else {
+          info.innerHTML = `<div style="color:#c0705a;font-size:13px;">❌ 匯率載入失敗，請稍後再試</div>`;
+        }
+      } catch (e) {
+        info.innerHTML = `<div style="color:#c0705a;font-size:13px;">❌ 載入失敗：${e.message}</div>`;
+      }
+    }, 100);
+    return `<div class="rate-card"><div class="rate-loading">⏳ 載入台灣銀行即時匯率中…</div></div>`;
   }
-  if (name === "支付優惠") {
-    return `行前準備的內容`;
-  }
-  if (name === "退稅資訊") {
-    return `行前準備的內容`;
-  }
-  if (name === "購物指南") {
-    return `行前準備的內容`;
-  }
-   if (name === "地鐵攻略") {
-    return `行前準備的內容`;
-  }
-};
+
+  if (name === "行前準備") return `行前準備的相關資訊可在此補充。`;
+  if (name === "必備APP") return `必備APP的相關資訊可在此補充。`;
+  if (name === "旅遊須知") return `旅遊須知的相關資訊可在此補充。`;
+  if (name === "支付優惠") return `支付優惠的相關資訊可在此補充。`;
+  if (name === "退稅資訊") return `退稅資訊的相關資訊可在此補充。`;
+  if (name === "購物指南") return `購物指南的相關資訊可在此補充。`;
+  if (name === "地鐵攻略") return `地鐵攻略的相關資訊可在此補充。`;
+
+  return `${name} 的相關資訊可在此補充。`;
+}
+
 document.querySelectorAll(".nav-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     const info = document.getElementById("nav-info");
@@ -374,7 +432,5 @@ updateDayCard();
 fetchSchedules();
 setInterval(fetchSchedules, 10000);
 </script>
-</body>
-</html>
 </body>
 </html>
