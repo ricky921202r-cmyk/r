@@ -294,28 +294,31 @@ function getNavContent(name) {
     return `<div style="display:flex;flex-direction:column;gap:16px;">
       <div style="background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(180,140,100,0.1)">
         <div style="font-size:15px;font-weight:700;color:#6b5240;margin-bottom:12px;">✈️ 去程 Outbound</div>
-        <div style="font-size:13px;color:#7a5c3a;margin-bottom:4px;">日期：2026/01/07</div>
-        <div style="font-size:13px;color:#7a5c3a;margin-bottom:12px;">航班：長榮航空 BR154</div>
+        <div style="font-size:13px;color:#7a5c3a;margin-bottom:4px;">日期：2026/08/11</div>
+        <div style="font-size:13px;color:#7a5c3a;margin-bottom:12px;">航班：星宇航空 BR154</div>
         <div style="display:flex;align-items:center;justify-content:space-between;">
-          <div><div style="font-size:11px;color:#9e8570;">起飛</div><div style="font-size:22px;font-weight:700;color:#b8966a;">10:00</div><div style="font-size:12px;color:#9e8570;">桃園 T2</div></div>
+          <div><div style="font-size:11px;color:#9e8570;">起飛</div><div style="font-size:22px;font-weight:700;color:#b8966a;">12:00</div><div style="font-size:12px;color:#9e8570;">臺灣桃園國際機場第一航廈</div></div>
           <div style="color:#c9a87a;font-size:20px;">→</div>
-          <div style="text-align:right;"><div style="font-size:11px;color:#9e8570;">抵達</div><div style="font-size:22px;font-weight:700;color:#b8966a;">13:30</div><div style="font-size:12px;color:#9e8570;">仁川 T1</div></div>
+          <div style="text-align:right;"><div style="font-size:11px;color:#9e8570;">抵達</div><div style="font-size:22px;font-weight:700;color:#b8966a;">14:40</div><div style="font-size:12px;color:#9e8570;"> 那霸國際機場 國際航廈</div></div>
         </div>
       </div>
       <div style="background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(180,140,100,0.1)">
         <div style="font-size:15px;font-weight:700;color:#6b5240;margin-bottom:12px;">🛬 回程 Return</div>
-        <div style="font-size:13px;color:#7a5c3a;margin-bottom:4px;">日期：2026/01/13</div>
-        <div style="font-size:13px;color:#7a5c3a;margin-bottom:12px;">航班：長榮航空 BR169</div>
+        <div style="font-size:13px;color:#7a5c3a;margin-bottom:4px;">日期：2026/08/15</div>
+        <div style="font-size:13px;color:#7a5c3a;margin-bottom:12px;">航班：星宇航空 BR169</div>
         <div style="display:flex;align-items:center;justify-content:space-between;">
-          <div><div style="font-size:11px;color:#9e8570;">起飛</div><div style="font-size:22px;font-weight:700;color:#b8966a;">11:40</div><div style="font-size:12px;color:#9e8570;">仁川 T1</div></div>
+          <div><div style="font-size:11px;color:#9e8570;">起飛</div><div style="font-size:22px;font-weight:700;color:#b8966a;">15:50</div><div style="font-size:12px;color:#9e8570;">那霸國際機場 國際航廈</div></div>
           <div style="color:#c9a87a;font-size:20px;">→</div>
-          <div style="text-align:right;"><div style="font-size:11px;color:#9e8570;">抵達</div><div style="font-size:22px;font-weight:700;color:#b8966a;">13:30</div><div style="font-size:12px;color:#9e8570;">桃園 T2</div></div>
+          <div style="text-align:right;"><div style="font-size:11px;color:#9e8570;">抵達</div><div style="font-size:22px;font-weight:700;color:#b8966a;">16:25</div><div style="font-size:12px;color:#9e8570;">臺灣桃園國際機場第一航廈</div></div>
         </div>
       </div>
     </div>`;
   }
   // 其他按鈕預設文字（之後可在這裡繼續新增）
   return `<span>${name} 的相關資訊可在此補充。</span>`;
+  if (name === "行前準備") {
+    return `行前準備的內容`;
+  }
 }
 
 document.querySelectorAll(".nav-btn").forEach(btn => {
