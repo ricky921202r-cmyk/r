@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>首爾旅遊計畫</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Georgia, 'Noto Serif TC', serif;
+      background: #faf6f0;
+      color: #5a4a3a;
+      min-height: 100vh;
+    }
+
+    /* Toast */
+    #toast {
+      position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
+      padding: 10px 22px; border-radius: 20px; font-size: 13px;
+      color: #fff; z-index: 999; box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      display: none; white-space: nowrap;
+    }
+
+    /* Modal */
+    #modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+      display: none; align-items: center; justify-content: center; z-index: 1000;
+    }
+    #modal-overlay.show { display: flex; }
+    #modal-box {
+      background: #fff; border-radius: 20px; padding: 28px 24px;
+      width: 300px; box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    }
+    #modal-box .icon { font-size: 20px; margin-bottom: 6px; }
+    #modal-box h3 { font-size: 16px; color: #6b5240; margin-bottom: 6px; }
+    #modal-box p { font-size: 12px; color: #9e8570; margin-bottom: 16px; }
+    #modal-password {
+      width: 100%; padding: 12px 14px; border: 1.5px solid #e0cdb4;
+      border-radius: 10px; font-size: 14px; outline: none;
+      font-family: inherit; margin-bottom: 12px;
+    }
+    .modal-btns { display: flex; gap: 10px; }
+    .modal-btns button {
+      flex: 1; padding: 11px; border: none; border-radius: 10px;
+      font-size: 14px; cursor: pointer; font-family: inherit;
+    }
+    #modal-cancel { background: #f0e8dc; color: #8a6a4a; }
+    #modal-confirm { background: #b8966a; color: #fff; font-weight: 600; }
+
+    /* Header */
+    header {
+      background: linear-gradient(180deg, #f0e8dc 0%, #faf6f0 100%);
+      text-align: center; padding: 40px 20px 24px;
+      border-bottom: 1px solid #e8d8c4;
+    }
+    header h1 { font-size: 28px; font-weight: 700; letter-spacing: 2px; color: #6b5240; margin-bottom: 6px; }
+    header .date { font-size: 14px; color: #9e8570; margin-bottom: 6px; }
+    header .sync-info { font-size: 11px; color: #c0a880; }
+
+    /* Main */
+    main { padding: 20px 16px 0; max-width: 480px; margin: 0 auto; }
+
+    /* Nav */
+    .nav-row { display: flex; justify-content: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+    .nav-btn {
+      padding: 8px 16px; border: 1.5px solid #c9a87a; border-radius: 20px;
+      background: transparent; color: #8a6a4a; font-size: 13px;
+      cursor: pointer; font-family: inherit; transition: all 0.2s;
+    }
+    .nav-btn.active { background: #b8966a; color: #fff; border-color: #b8966a; }
+    #nav-info {
+      background: #fff8f0; border: 1px solid #e0c9a8; border-radius: 12px;
+      padding: 16px; margin-top: 10px; font-size: 13px; color: #7a5c3a;
+      line-height: 1.8; display: none;
+    }
+    #nav-info.show { display: block; }
+
+    /* Section title */
+    .section-title { text-align: center; margin: 20px 0 12px; font-size: 13px; color: #b09070; }
+
+    /* Day Selector */
+    #day-selector { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 24px; }
+    .day-btn {
+      width: 64px; padding: 10px 0; border-radius: 12px;
+      border: 1.5px solid #d4b896; background: #fff; color: #8a6a4a;
+      cursor: pointer; text-align: center; font-family: inherit; transition: all 0.2s;
+    }
+    .day-btn.active { background: #b8966a; color: #fff; border-color: #b8966a; }
+    .day-btn .day-num { font-size: 11px; margin-bottom: 2px; }
+    .day-btn .day-date { font-size: 14px; font-weight: bold; }
+    .day-btn .day-week { font-size: 11px; margin-top: 2px; }
+
+    /* Day Card */
+    #day-card {
+      background: #fff; border-radius: 20px; padding: 24px;
+      box-shadow: 0 4px 20px rgba(180,140,100,0.10); margin-bottom: 30px;
+    }
+    #day-card h2 { font-size: 20px; font-weight: 700; color: #6b5240; margin-bottom: 4px; }
+    #day-hotel { font-size: 13px; color: #9e8570; margin-bottom: 20px; }
+
+    /* Schedule list */
+    #schedule-list { margin-bottom: 20px; }
+    .schedule-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 12px 0; border-bottom: 1px solid #f0e8dc;
+    }
+    .schedule-time {
+      background: #b8966a; color: #fff; border-radius: 8px;
+      padding: 4px 10px; font-size: 12px; white-space: nowrap; flex-shrink: 0;
+    }
+    .schedule-info { flex: 1; }
+    .schedule-activity { font-size: 14px; color: #5a4a3a; font-weight: 600; }
+    .schedule-location { font-size: 12px; color: #9e8570; margin-top: 2px; }
+    .schedule-delete {
+      background: none; border: none; color: #ccc;
+      cursor: pointer; font-size: 16px; flex-shrink: 0; padding: 0;
+    }
+    #empty-msg { font-size: 13px; color: #c0a880; text-align: center; padding: 12px 0; margin-bottom: 16px; }
+    #loading-msg { font-size: 13px; color: #c0a880; text-align: center; padding: 20px 0; }
+
+    /* Add Form */
+    #add-form { background: #faf6f0; border-radius: 14px; padding: 18px; }
+    #add-form .form-title { font-size: 14px; font-weight: 600; color: #7a5c3a; margin-bottom: 12px; }
+    #add-form input {
+      width: 100%; padding: 12px 14px; border: 1px solid #e0cdb4;
+      border-radius: 10px; margin-bottom: 10px; font-size: 13px;
+      color: #5a4a3a; background: #fff; outline: none; font-family: inherit;
+    }
+    #btn-add {
+      width: 100%; padding: 12px; background: #b8966a; color: #fff;
+      border: none; border-radius: 10px; font-size: 14px; font-weight: 600;
+      cursor: pointer; font-family: inherit; margin-top: 4px; transition: background 0.2s;
+    }
+    #btn-add:disabled { background: #d4b896; cursor: not-allowed; }
+    #pwd-saved { font-size: 11px; color: #9e8570; text-align: center; margin-top: 8px; display: none; }
+  </style>
+</head>
+<body>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<!-- 密碼 Modal -->
+<div id="modal-overlay">
+  <div id="modal-box">
+    <div class="icon">🔐</div>
+    <h3>請輸入密碼</h3>
+    <p>需要密碼才能新增或刪除行程</p>
+    <input type="password" id="modal-password" placeholder="輸入密碼" />
+    <div class="modal-btns">
+      <button id="modal-cancel">取消</button>
+      <button id="modal-confirm">確認</button>
+    </div>
+  </div>
+</div>
+
+<!-- Header -->
+<header>
+  <h1>首爾旅遊計畫</h1>
+  <div class="date">2026年1月7日 – 13日</div>
+  <div class="sync-info">🌐 共享行程・每10秒自動同步・🔐 需密碼才能編輯</div>
+</header>
+
+<main>
+  <!-- Nav -->
+  <div class="nav-row">
+    <button class="nav-btn" data-info="行前準備">行前準備</button>
+    <button class="nav-btn" data-info="機票資訊">機票資訊</button>
+    <button class="nav-btn" data-info="必備APP">必備APP</button>
+    <button class="nav-btn" data-info="旅遊須知">旅遊須知</button>
+  </div>
+  <div class="nav-row">
+    <button class="nav-btn" data-info="匯率換算">匯率換算</button>
+    <button class="nav-btn" data-info="支付優惠">支付優惠</button>
+    <button class="nav-btn" data-info="退稅資訊">退稅資訊</button>
+    <button class="nav-btn" data-info="購物指南">購物指南</button>
+  </div>
+  <div class="nav-row">
+    <button class="nav-btn" data-info="地鐵攻略">地鐵攻略</button>
+  </div>
+  <div id="nav-info"></div>
+
+  <div class="section-title">行程日期</div>
+
+  <!-- Day Selector -->
+  <div id="day-selector">
+    <button class="day-btn active" data-day="1"><div class="day-num">第1天</div><div class="day-date">1/7</div><div class="day-week">週二</div></button>
+    <button class="day-btn" data-day="2"><div class="day-num">第2天</div><div class="day-date">1/8</div><div class="day-week">週三</div></button>
+    <button class="day-btn" data-day="3"><div class="day-num">第3天</div><div class="day-date">1/9</div><div class="day-week">週四</div></button>
+    <button class="day-btn" data-day="4"><div class="day-num">第4天</div><div class="day-date">1/10</div><div class="day-week">週五</div></button>
+    <button class="day-btn" data-day="5"><div class="day-num">第5天</div><div class="day-date">1/11</div><div class="day-week">週六</div></button>
+    <button class="day-btn" data-day="6"><div class="day-num">第6天</div><div class="day-date">1/12</div><div class="day-week">週日</div></button>
+    <button class="day-btn" data-day="7"><div class="day-num">第7天</div><div class="day-date">1/13</div><div class="day-week">週一</div></button>
+  </div>
+
+  <!-- Day Card -->
+  <div id="day-card">
+    <h2 id="day-title"></h2>
+    <div id="day-hotel"></div>
+    <div id="loading-msg">載入中…</div>
+    <div id="empty-msg" style="display:none">尚無行程，快來新增吧！</div>
+    <div id="schedule-list"></div>
+    <div id="add-form">
+      <div class="form-title">🔐 新增行程（需密碼）</div>
+      <input type="text" id="input-time" placeholder="時間（例如：14:30）" />
+      <input type="text" id="input-activity" placeholder="活動內容" />
+      <input type="text" id="input-location" placeholder="地點（選填）" />
+      <button id="btn-add">＋ 新增</button>
+      <div id="pwd-saved">🔓 密碼已記住（本次瀏覽有效）</div>
+    </div>
+  </div>
+</main>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzAnPW_x5fto9YKSaA61fpDWZnZk0EACZEcS_qg_LrGIEsaxzq6s7sf85mHdvH5ojNGRg/exec";
+
+const dayData = {
+  1: { title: "抵達韓國", hotel: "住宿：VIVALDI PARK 渡假村" },
+  2: { title: "首爾市區探索", hotel: "住宿：首爾市區飯店" },
+  3: { title: "景福宮 & 仁寺洞", hotel: "住宿：首爾市區飯店" },
+  4: { title: "弘大 & 梨泰院", hotel: "住宿：首爾市區飯店" },
+  5: { title: "南山塔 & 明洞", hotel: "住宿：首爾市區飯店" },
+  6: { title: "江南 & 東大門", hotel: "住宿：首爾市區飯店" },
+  7: { title: "返回台灣", hotel: "" },
+};
+
+let selectedDay = 1;
+let schedules = {};
+let savedPassword = "";
+let pendingAction = null;
+let saving = false;
+
+// JSONP 呼叫
+function callScript(params) {
+  return new Promise((resolve, reject) => {
+    const cbName = "cb_" + Date.now();
+    const url = SCRIPT_URL + "?" + new URLSearchParams({ ...params, callback: cbName });
+    const script = document.createElement("script");
+    const timeout = setTimeout(() => {
+      cleanup(); reject(new Error("逾時，請檢查網路"));
+    }, 10000);
+    window[cbName] = (data) => { cleanup(); resolve(data); };
+    function cleanup() {
+      clearTimeout(timeout);
+      delete window[cbName];
+      if (script.parentNode) script.parentNode.removeChild(script);
+    }
+    script.onerror = () => { cleanup(); reject(new Error("網路錯誤")); };
+    script.src = url;
+    document.head.appendChild(script);
+  });
+}
+
+// Toast
+function showToast(msg, color = "#6b9e6b") {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.style.background = color;
+  t.style.display = "block";
+  setTimeout(() => t.style.display = "none", 3000);
+}
+
+// 渲染行程
+function renderSchedules() {
+  const list = document.getElementById("schedule-list");
+  const emptyMsg = document.getElementById("empty-msg");
+  const loadingMsg = document.getElementById("loading-msg");
+  loadingMsg.style.display = "none";
+  const items = (schedules[selectedDay] || []).slice().sort((a, b) => a.time.localeCompare(b.time));
+  if (items.length === 0) {
+    emptyMsg.style.display = "block";
+    list.innerHTML = "";
+  } else {
+    emptyMsg.style.display = "none";
+    list.innerHTML = items.map(item => `
+      <div class="schedule-item">
+        <div class="schedule-time">${item.time}</div>
+        <div class="schedule-info">
+          <div class="schedule-activity">${item.activity}</div>
+          ${item.location ? `<div class="schedule-location">📍 ${item.location}</div>` : ""}
+        </div>
+        <button class="schedule-delete" data-id="${item.id}">✕</button>
+      </div>
+    `).join("");
+    list.querySelectorAll(".schedule-delete").forEach(btn => {
+      btn.addEventListener("click", () => handleDelete(btn.dataset.id));
+    });
+  }
+}
+
+// 更新 Day Card 標題
+function updateDayCard() {
+  const d = dayData[selectedDay];
+  const dates = ["1/7","1/8","1/9","1/10","1/11","1/12","1/13"];
+  const weeks = ["週二","週三","週四","週五","週六","週日","週一"];
+  document.getElementById("day-title").textContent =
+    `第${selectedDay}天 – ${dates[selectedDay-1]}（${weeks[selectedDay-1].slice(1)}）${d.title}`;
+  const hotel = document.getElementById("day-hotel");
+  hotel.textContent = d.hotel;
+  hotel.style.display = d.hotel ? "block" : "none";
+}
+
+// 從 Google Sheets 讀取
+async function fetchSchedules() {
+  try {
+    const json = await callScript({ action: "get" });
+    const grouped = {};
+    (json.data || []).forEach(row => {
+      const d = parseInt(row.day);
+      if (!grouped[d]) grouped[d] = [];
+      grouped[d].push({ id: String(row.id), time: row.time, activity: row.activity, location: row.location || "" });
+    });
+    schedules = grouped;
+    renderSchedules();
+  } catch (e) {
+    showToast("讀取失敗：" + e.message, "#c0705a");
+    document.getElementById("loading-msg").style.display = "none";
+  }
+}
+
+// 執行新增/刪除
+async function executeAction(action, pwd) {
+  saving = true;
+  document.getElementById("btn-add").disabled = true;
+  document.getElementById("btn-add").textContent = "處理中…";
+  try {
+    const json = await callScript({ ...action, password: pwd });
+    if (json.success) {
+      savedPassword = pwd;
+      document.getElementById("pwd-saved").style.display = "block";
+      if (action.action === "add") {
+        document.getElementById("input-time").value = "";
+        document.getElementById("input-activity").value = "";
+        document.getElementById("input-location").value = "";
+        showToast("✓ 行程已儲存！");
+      } else {
+        showToast("✓ 行程已刪除");
+      }
+      await fetchSchedules();
+    } else {
+      if (json.error === "密碼錯誤") {
+        savedPassword = "";
+        document.getElementById("pwd-saved").style.display = "none";
+        showToast("❌ 密碼錯誤", "#c0705a");
+        pendingAction = action;
+        openModal();
+      } else {
+        showToast("❌ " + (json.error || "操作失敗"), "#c0705a");
+      }
+    }
+  } catch (e) {
+    showToast("操作失敗：" + e.message, "#c0705a");
+  } finally {
+    saving = false;
+    document.getElementById("btn-add").disabled = false;
+    document.getElementById("btn-add").textContent = "＋ 新增";
+  }
+}
+
+function handleAdd() {
+  const time = document.getElementById("input-time").value.trim();
+  const activity = document.getElementById("input-activity").value.trim();
+  const location = document.getElementById("input-location").value.trim();
+  if (!time || !activity) { showToast("請填寫時間與活動內容", "#c0705a"); return; }
+  const action = { action: "add", day: selectedDay, time, activity, location };
+  if (savedPassword) { executeAction(action, savedPassword); }
+  else { pendingAction = action; openModal(); }
+}
+
+function handleDelete(id) {
+  const action = { action: "delete", id };
+  if (savedPassword) { executeAction(action, savedPassword); }
+  else { pendingAction = action; openModal(); }
+}
+
+function openModal() {
+  document.getElementById("modal-password").value = "";
+  document.getElementById("modal-overlay").classList.add("show");
+  setTimeout(() => document.getElementById("modal-password").focus(), 100);
+}
+
+function closeModal() {
+  document.getElementById("modal-overlay").classList.remove("show");
+  pendingAction = null;
+}
+
+function confirmModal() {
+  const pwd = document.getElementById("modal-password").value;
+  if (!pwd) { showToast("請輸入密碼", "#c0705a"); return; }
+  document.getElementById("modal-overlay").classList.remove("show");
+  executeAction(pendingAction, pwd);
+  pendingAction = null;
+}
+
+// Nav 按鈕
+document.querySelectorAll(".nav-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const info = document.getElementById("nav-info");
+    if (btn.classList.contains("active")) {
+      btn.classList.remove("active");
+      info.classList.remove("show");
+    } else {
+      document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      info.textContent = btn.dataset.info + " 的相關資訊可在此填寫或補充內容。";
+      info.classList.add("show");
+    }
+  });
+});
+
+// Day 按鈕
+document.querySelectorAll(".day-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".day-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    selectedDay = parseInt(btn.dataset.day);
+    updateDayCard();
+    renderSchedules();
+  });
+});
+
+// 新增按鈕
+document.getElementById("btn-add").addEventListener("click", handleAdd);
+
+// Enter 鍵送出
+document.getElementById("input-location").addEventListener("keydown", e => { if (e.key === "Enter") handleAdd(); });
+
+// Modal 按鈕
+document.getElementById("modal-cancel").addEventListener("click", closeModal);
+document.getElementById("modal-confirm").addEventListener("click", confirmModal);
+document.getElementById("modal-password").addEventListener("keydown", e => { if (e.key === "Enter") confirmModal(); });
+
+// 初始化
+updateDayCard();
+fetchSchedules();
+setInterval(fetchSchedules, 10000);
+</script>
+</body>
+</html>
