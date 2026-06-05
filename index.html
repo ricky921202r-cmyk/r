@@ -157,7 +157,7 @@
 <!-- Header -->
 <header>
   <h1>琉球旅遊計畫</h1>
-  <div class="date">2026年1月7日 – 13日</div>
+  <div class="date">2026年8月11日 – 15日</div>
   <div class="sync-info">🌐 共享行程・每10秒自動同步・🔐 需密碼才能編輯</div>
 </header>
 
@@ -291,8 +291,8 @@ function renderSchedules() {
 // 更新 Day Card 標題
 function updateDayCard() {
   const d = dayData[selectedDay];
-  const dates = ["1/7","1/8","1/9","1/10","1/11","1/12","1/13"];
-  const weeks = ["週二","週三","週四","週五","週六","週日","週一"];
+  const dates = ["8/11","8/12","8/13","8/14","8/15"];
+  const weeks = ["週二","週三","週四","週五","週六"];
   document.getElementById("day-title").textContent =
     `第${selectedDay}天 – ${dates[selectedDay-1]}（${weeks[selectedDay-1].slice(1)}）${d.title}`;
   const hotel = document.getElementById("day-hotel");
