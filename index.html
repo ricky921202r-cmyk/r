@@ -427,7 +427,33 @@ function getNavContent(name) {
     </div>`;
   }
   
-  if (name === "必備APP") return `必備APP的相關資訊測試中。`;
+  if (name === "必備APP") {
+    const apps = [
+      { name: "乘換案內", desc: "日本大眾運輸查詢 App，可查詢電車、巴士、單軌列車路線、票價及轉乘資訊。", color: "#3a7bd5", letter: "乘", url: "https://apps.apple.com/tw/app/%E6%8F%9B%E4%B9%98%E6%A1%88%E5%85%A7-%E4%B8%AD%E6%96%87%E7%89%88-%E6%97%A5%E6%9C%AC%E6%97%85%E6%B8%B8%E4%BA%A4%E9%80%9A%E4%B9%98%E6%8F%9B%E6%A1%88%E5%85%A7/id1112129114" },
+      { name: "tenki.jp", desc: "日本氣象預報 App，提供即時天氣、降雨機率、颱風動態及天氣警報。", color: "#5bb8f5", letter: "天", url: "https://apps.apple.com/tw/app/tenki-jp-%E5%A4%A9%E6%B0%97%E4%BA%88%E5%A0%B1-%E9%9B%A8%E9%9B%B2%E3%83%AC%E3%83%BC%E3%83%80%E3%83%BC-%E5%9C%B0%E9%9C%87%E9%80%9F%E5%A0%B1/id433865746" },
+      { name: "GO 計程車", desc: "日本計程車叫車 App，類似 Uber，可直接叫車、查看車輛位置及線上付款。", color: "#1dc76a", letter: "GO", url: "https://apps.apple.com/tw/app/%E6%97%A5%E6%9C%AC%E7%9A%84go-%E8%A8%88%E7%A8%8B%E8%BB%8A%E5%8F%AB%E8%BB%8Aapp/id1254341709" },
+      { name: "NAVITIME", desc: "日本旅遊導航 App，可規劃交通路線、景點行程，並提供觀光資訊與離線地圖。", color: "#00a0e9", letter: "N", url: "https://apps.apple.com/tw/app/navitime-%E5%9C%B0%E5%9B%B3%E3%81%A8%E4%B9%97%E6%8F%9B%E3%81%AE%E7%B7%8F%E5%90%88%E3%83%8A%E3%83%93/id365876050" },
+      { name: "DeepL", desc: "翻譯軟體，支援多國語言即時翻譯與拍照翻譯。", color: "#0f2b46", letter: "D", url: "https://apps.apple.com/tw/app/deepl-translate/id1552407475" },
+      { name: "TableCheck", desc: "日本很多熱門餐廳使用，比較容易預約高人氣店家。", color: "#e85d4a", letter: "T", url: "https://apps.apple.com/tw/app/tablecheck-%E9%A4%90%E5%BB%B3%E9%A0%90%E7%B4%84/id1183241149" },
+      { name: "Times Car", desc: "日本最大停車場集團 PARK24 推出的租車／共享汽車服務 App，可直接搜尋、預約及管理車輛。", color: "#00b050", letter: "T", url: "https://apps.apple.com/tw/app/%E3%82%BF%E3%82%A4%E3%83%A0%E3%82%BA%E3%82%AB%E3%83%BC/id825371148" },
+      { name: "Tabelog", desc: "日本最大美食評價平台，可搜尋附近餐廳、查看評分、菜單及用戶評論。", color: "#c8392b", letter: "食", url: "https://apps.apple.com/tw/app/tabelog-%E6%97%A5%E6%9C%AC%E9%A4%90%E5%BB%B3%E6%8E%A2%E7%B4%A2-%E8%A8%82%E4%BD%8D%E8%88%87%E8%A9%95%E5%83%B9%E5%85%A8%E6%96%B9%E4%BD%8D%E5%B9%B3%E5%8F%B0/id6752922875" },
+      { name: "Payke", desc: "專為外國旅客設計的購物 App，掃描商品條碼即可顯示中文介紹、成分及使用說明。", color: "#f5a623", letter: "P", url: "https://apps.apple.com/tw/app/payke-%E4%BD%BF%E7%94%A8%E5%84%AA%E6%83%A0%E5%88%B8-%E8%AE%93%E6%97%A5%E6%9C%AC%E6%97%85%E8%A1%8C%E6%9B%B4%E5%88%92%E7%AE%97-%E7%BF%BB%E8%AD%AF-%E8%A9%95%E5%83%B9/id1040452788" },
+      { name: "PayPay", desc: "日本最普及的行動支付 App，可在許多商店、餐廳及販賣機進行電子付款。", color: "#e6002d", letter: "Pay", url: "https://apps.apple.com/tw/app/paypal/id283646709" },
+    ];
+    const cards = apps.map(app => `
+      <a href="${app.url}" target="_blank" style="display:flex;align-items:center;gap:14px;padding:14px;background:#fdf8f0;border-radius:12px;margin-bottom:10px;text-decoration:none;cursor:pointer;">
+        <div style="width:52px;height:52px;border-radius:14px;background:${app.color};display:flex;align-items:center;justify-content:center;font-size:${app.letter.length > 1 ? '13px' : '20px'};font-weight:700;color:#fff;flex-shrink:0;">${app.letter}</div>
+        <div style="flex:1;">
+          <div style="font-size:15px;font-weight:700;color:#5a4a3a;margin-bottom:3px;">${app.name}</div>
+          <div style="font-size:12px;color:#9e8570;line-height:1.5;">${app.desc}</div>
+        </div>
+        <div style="color:#c9a87a;font-size:18px;flex-shrink:0;">›</div>
+      </a>`).join("");
+    return `<div style="background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(180,140,100,0.1)">
+      <div style="font-size:18px;font-weight:700;color:#6b5240;margin-bottom:16px;">必備 APP</div>
+      ${cards}
+    </div>`;
+  }
   
   if (name === "旅遊須知") {
   return `<div style="background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(180,140,100,0.1)">
