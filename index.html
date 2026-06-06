@@ -491,8 +491,20 @@ function getNavContent(name) {
   
   if (name === "支付優惠") return `支付優惠的相關資訊測試中。`;
   
-  if (name === "退稅資訊") return `退稅資訊的相關資訊測試中。`;
-  
+  if (name === "退稅資訊")  { 
+    return `<div style="background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(180,140,100,0.1)">
+    <div style="font-size:18px;font-weight:700;color:#6b5240;margin-bottom:16px;">退稅資訊</div>
+
+    <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">🇯🇵 日本退稅基本條件</div>
+    ${["持台灣護照，以短期觀光身分入境
+
+      同一家店單日消費滿5,000日圓（未稅)以上
+
+      結帳時出示護照正本（影本、照片通常不接受）
+
+      店家需有「Tax Free」標誌"].map(t => `
+      <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")} </div>`;
+  }
   if (name === "購物指南") return `購物指南的相關資訊測試中。`;
   
 
