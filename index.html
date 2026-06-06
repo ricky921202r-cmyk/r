@@ -111,9 +111,7 @@
     <button class="nav-btn" data-info="退稅資訊">退稅資訊</button>
     <button class="nav-btn" data-info="購物指南">購物指南</button>
   </div>
-  <div class="nav-row">
-    <button class="nav-btn" data-info="地鐵攻略">地鐵攻略</button>
-  </div>
+
   <div id="nav-info"></div>
 
   <div class="section-title">行程日期</div>
@@ -399,9 +397,9 @@ function getNavContent(name) {
   if (name === "支付優惠") return `支付優惠的相關資訊可在此補充。`;
   if (name === "退稅資訊") return `退稅資訊的相關資訊可在此補充。`;
   if (name === "購物指南") return `購物指南的相關資訊可在此補充。`;
-  if (name === "地鐵攻略") return `地鐵攻略的相關資訊可在此補充。`;
+  
 
-  return `${name} 的相關資訊可在此補充。`;
+  return `${name} 的相關資訊測試中。`;
 }
 
 document.querySelectorAll(".nav-btn").forEach(btn => {
