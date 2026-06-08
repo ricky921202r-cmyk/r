@@ -551,9 +551,56 @@ function getNavContent(name) {
     </div>`;
   }
   
-  if (name === "購物指南") return `購物指南的相關資訊測試中。`;
-return `${name} 的相關資訊測試中。`;
-  }
+  if (name === "購物指南") return `<div style="font-size:13px;color:#7a5c3a;">購物指南的相關資訊測試中。</div>`;
+
+  return `<div style="font-size:13px;color:#7a5c3a;">${name} 的相關資訊測試中。</div>`;
+}
+
+document.querySelectorAll(".nav-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const info = document.getElementById("nav-info");
+    if (btn.classList.contains("active")) {
+      btn.classList.remove("active");
+      info.classList.remove("show");
+    } else {
+      document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      info.innerHTML = getNavContent(btn.dataset.info);
+      info.classList.add("show");
+    }
+  });
+});
+
+document.querySelectorAll(".day-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".day-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    selectedDay = parseInt(btn.dataset.day);
+    updateDayCard();
+    renderSchedules();
+  });
+});
+
+document.getElementById("btn-add").addEventListener("click", handleAdd);
+document.getElementById("input-location").addEventListener("keydown", e => { if (e.key === "Enter") handleAdd(); });
+document.getElementById("modal-cancel").addEventListener("click", closeModal);
+document.getElementById("modal-confirm").addEventListener("click", confirmModal);
+document.getElementById("modal-password").addEventListener("keydown", e => { if (e.key === "Enter") confirmModal(); });
+
+updateDayCard();
+fetchSchedules();
+setInterval(fetchSchedules, 10000);
+</script>
+</body>
+</html>
+ENDOFFILE
+echo "done"
+Output
+
+done
+Done
+
+You are out 
   
  
 
