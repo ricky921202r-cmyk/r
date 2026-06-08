@@ -541,7 +541,7 @@ function getNavContent(name) {
     
      </div>`;
   }
-  }
+  
  if (name === "退稅資訊") {
     return `<div style="background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(180,140,100,0.1)">
       <div style="font-size:18px;font-weight:700;color:#6b5240;margin-bottom:16px;">退稅資訊</div>
@@ -551,10 +551,10 @@ function getNavContent(name) {
     </div>`;
   }
   if (name === "購物指南") return `購物指南的相關資訊測試中。`;
+    return `${name} 的相關資訊測試中。`;
+ }
   
-
-  return `${name} 的相關資訊測試中。`;
-  }
+ 
 
 // ===== 寄送行前清單到 Gmail =====
 async function sendChecklist() {
