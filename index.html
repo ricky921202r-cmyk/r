@@ -502,14 +502,43 @@ function getNavContent(name) {
   return `<div style="background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(180,140,100,0.1)">
     <div style="font-size:18px;font-weight:700;color:#6b5240;margin-bottom:16px;">購物時可注意</div>
 
-    <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">💳 信用卡優惠</div>
-    ${["在 RYUBO 使用台新信用卡：10% 免稅 ","消費滿額再享 5% 現金回饋 ","搭配 Richart 指定海外方案最高再享 3.3% 回饋"].map(t => `
+    <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">在 RYUBO 使用台新信用卡</div>
+    ${["10% 免稅 ","消費滿額再享 5% 現金回饋 ","搭配 Richart 指定海外方案最高再享 3.3% 回饋"].map(t => `
       <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
     
 
-    <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">💳 信用卡優惠</div>
-    ${["在 RYUBO 使用台新信用卡：10% 免稅 ","消費滿額再享 5% 現金回饋 ","搭配 Richart 指定海外方案最高再享 3.3% 回饋"].map(t => `
+    <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">富邦 J 卡</div>
+    ${["日韓泰旅遊最高 6%","去日本基本必備，實體刷卡回饋高，各大藥妝店與百貨幾乎都有特約加碼。"].map(t => `
       <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
+
+    <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">聯邦吉鶴卡</div>
+    ${["最高 4.5% 左右","主打日本在地消費加碼，且在日本直接支援 Apple Pay（感應 QUICPay），在沖繩的 LAWSON、FamilyMart 或驚安殿堂唐吉訶德，只要跟店員說 QUICPay”,"手機嗶一下就結帳完成。"].map(t => `
+      <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
+
+    <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">玉山 Unicard / 熊本熊卡</div>
+    ${["玉山 Unicard： 選擇日本指定商店特選方案，最高可刷到 14.5% 回饋（含新戶與一般加碼）。","玉山 熊本熊日圓雙幣卡： 國外消費免 1.5% 手續費，且在指定日本商店（唐吉訶德、Bic Camera、大國藥妝、松本清）消費最高享 8.5% 回饋。"].map(t => `
+      <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
+
+    <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">滙豐 Live+ 現金回饋卡</div>
+    ${["針對日本餐飲有 5.88% 的超高回饋！去沖繩吃石垣牛、阿古豬（Agu 豬）或燒肉，刷這張最補。"].map(t => `
+      <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
+
+   <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">全支付 × PayPay（最高 15% 回饋）</div>
+    ${["基本回饋 3.5%： 筆筆享 3.5% 全點回饋（單筆上限 30 點、每月上限 120 點，適合超商小額分次刷）。","銀行加碼 5%（週週賺）： 連結將來銀行或國泰世華帳戶付款，筆筆再加碼 5%（每週上限 100 全點）。","新戶加碼 5%： 註冊當月新戶筆筆加碼 5%（上限 100 點）。","即時匯率優勢： 採用華泰銀行每日即時牌價，通常匯率相當漂亮。"].map(t => `
+      <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
+
+    <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">街口支付 × PayPay（最高 10.5% ~ 12% 回饋）</div>
+    ${["街利存帳戶付款： 筆筆最高享 2.5% 街口幣回饋（依會員等級）。","台新街口聯名卡付款： 筆筆享 3.5% 街口幣回饋，額度高、上限寬鬆。","華南銀行帳戶付款： 筆筆享 5% 回饋（每月上限 50 街口幣，刷 1,000 元台幣封頂）。","特店折價券（最高 7%）： 出發前在街口 App 內先領取 Bic Camera、松本清等日本特店優惠券，疊加指定付款最高可衝到 10.5% ~ 12%。"].map(t => `
+      <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
+
+    <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">玉山 Wallet × PayPay（吃拉麵/小額神隊友）</div>
+    ${["PayPay 櫻花券現折 600 日圓： 每月 1 號可以在玉山 Wallet App 內領取「PayPay櫻花券」，在日本 PayPay 商店消費時選用，直接折抵 600 日圓（每月限額，記得提早領）。","綁定玉山熊本熊卡： 筆筆消費享 3.5% 現金回饋，歸戶每季上限 100 元台幣。"].map(t => `
+      <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
+
+    <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">全盈+ PAY × PayPay（新戶/特定月份最高 27% ~ 40%）</div>
+    ${["基本回饋 5.5%： 筆筆消費享 5.5% 全盈儲值金（單筆上限 50 元，每月上限 150 元）。","滿額送全家點數： 累積消費滿 1 萬元台幣，加碼贈送 30 萬點全家 Fa 點。","新戶再加碼 10%（上限 100 元）。"].map(t => `
+      <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
+    
      </div>`;
     
   }
