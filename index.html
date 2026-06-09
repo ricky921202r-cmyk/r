@@ -6,19 +6,9 @@
   <title>琉球旅遊計畫</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: Georgia, 'Noto Serif TC', serif;  background-image: url('https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcTDkbLcQ4Qg2mx0DX_mR1yh2tJy1vJxCxGqIhEgI-HEUfsXleMSL-lABUILmGBkve4r4edccXlDQRoABItQ8Mdxe30&s=19'); background-size: cover; background-attachment: fixed; background-position: center;  }body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: rgba(255, 255, 255, 0.6);  /* 數字越大越白越不透明，0~1 */
-  z-index: 0;
-  pointer-events: none;
-}
-
-header, main {
-  position: relative;
-  z-index: 1;
-}
+    body { font-family: Georgia, 'Noto Serif TC', serif; background-image: url('https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcTDkbLcQ4Qg2mx0DX_mR1yh2tJy1vJxCxGqIhEgI-HEUfsXleMSL-lABUILmGBkve4r4edccXlDQRoABItQ8Mdxe30&s=19'); background-size: cover; background-attachment: fixed; background-position: center; }
+    body::before { content: ''; position: fixed; inset: 0; background: rgba(255,255,255,0.6); z-index: 0; pointer-events: none; }
+    header, main { position: relative; z-index: 1; }
     #toast { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); padding: 10px 22px; border-radius: 20px; font-size: 13px; color: #fff; z-index: 999; box-shadow: 0 4px 16px rgba(0,0,0,0.15); display: none; white-space: nowrap; }
     #modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 1000; }
     #modal-overlay.show { display: flex; }
@@ -31,7 +21,7 @@ header, main {
     .modal-btns button { flex: 1; padding: 11px; border: none; border-radius: 10px; font-size: 14px; cursor: pointer; font-family: inherit; }
     #modal-cancel { background: #f0e8dc; color: #8a6a4a; }
     #modal-confirm { background: #b8966a; color: #fff; font-weight: 600; }
-    header { background: rgba(196, 239, 245, 0.6); text-align: center; padding: 40px 20px 24px; border-bottom: 1px solid #e8d8c4; }
+    header { background: rgba(196,239,245,0.6); text-align: center; padding: 40px 20px 24px; border-bottom: 1px solid #e8d8c4; }
     header h1 { font-size: 28px; font-weight: 700; letter-spacing: 2px; color: #6b5240; margin-bottom: 6px; }
     header .date { font-size: 14px; color: #9e8570; margin-bottom: 6px; }
     header .sync-info { font-size: 11px; color: #c0a880; }
@@ -66,7 +56,6 @@ header, main {
     #btn-add { width: 100%; padding: 12px; background: #f56262; color: #fff; border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; margin-top: 4px; transition: background 0.2s; }
     #btn-add:disabled { background: #f5a0a0; cursor: not-allowed; }
     #pwd-saved { font-size: 11px; color: #9e8570; text-align: center; margin-top: 8px; display: none; }
-    /* 匯率 */
     .rate-card { background: #fff; border-radius: 14px; padding: 18px; box-shadow: 0 2px 8px rgba(180,140,100,0.1); }
     .rate-card-title { font-size: 15px; font-weight: 700; color: #6b5240; margin-bottom: 4px; }
     .rate-updated { font-size: 11px; color: #c0a880; margin-bottom: 14px; }
@@ -88,9 +77,7 @@ header, main {
   </style>
 </head>
 <body>
-
 <div id="toast"></div>
-
 <div id="modal-overlay">
   <div id="modal-box">
     <div class="icon">🔐</div>
@@ -103,13 +90,11 @@ header, main {
     </div>
   </div>
 </div>
-
 <header>
   <h1>琉球旅遊計畫</h1>
   <div class="date">2026年8月11日 – 15日</div>
   <div class="sync-info">🌐 共享行程・每10秒自動同步・🔐 需密碼才能編輯</div>
 </header>
-
 <main>
   <div class="nav-row">
     <button class="nav-btn" data-info="行前準備">行前準備</button>
@@ -123,11 +108,8 @@ header, main {
     <button class="nav-btn" data-info="退稅資訊">退稅資訊</button>
     <button class="nav-btn" data-info="購物指南">購物指南</button>
   </div>
-
   <div id="nav-info"></div>
-
   <div class="section-title">行程日期</div>
-
   <div id="day-selector">
     <button class="day-btn active" data-day="1"><div class="day-num">第1天</div><div class="day-date">8/11</div><div class="day-week">週二</div></button>
     <button class="day-btn" data-day="2"><div class="day-num">第2天</div><div class="day-date">8/12</div><div class="day-week">週三</div></button>
@@ -135,13 +117,16 @@ header, main {
     <button class="day-btn" data-day="4"><div class="day-num">第4天</div><div class="day-date">8/14</div><div class="day-week">週五</div></button>
     <button class="day-btn" data-day="5"><div class="day-num">第5天</div><div class="day-date">8/15</div><div class="day-week">週六</div></button>
   </div>
-
   <div id="day-card">
     <h2 id="day-title"></h2>
     <div id="day-hotel"></div>
     <div id="loading-msg">載入中…</div>
     <div id="empty-msg" style="display:none">尚無行程，快來新增吧！</div>
     <div id="schedule-list"></div>
+    <div id="day-map" style="margin-top:12px;display:none;">
+      <div style="font-size:12px;color:#b09070;margin-bottom:6px;">📍 本日地點地圖</div>
+      <iframe id="map-iframe" width="100%" height="250" style="border:0;border-radius:12px;" loading="lazy" allowfullscreen></iframe>
+    </div>
     <div id="add-form">
       <div class="form-title">🔐 新增行程（需密碼）</div>
       <input type="text" id="input-time" placeholder="時間（例如：14:30）" />
@@ -152,10 +137,8 @@ header, main {
     </div>
   </div>
 </main>
-
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyjMHmGcqO2AY6NcjzZiQOuq-FSU4apgyDkHifWK6IJUKMK5WlzVD2a9s-skc1NaSgzUA/exec";
-
 const dayData = {
   1: { title: "抵達琉球", hotel: "住宿：那霸市區飯店" },
   2: { title: "首里城 & 國際通", hotel: "住宿：那霸市區飯店" },
@@ -163,13 +146,7 @@ const dayData = {
   4: { title: "離島探索", hotel: "住宿：那霸市區飯店" },
   5: { title: "返回台灣", hotel: "" },
 };
-
-let selectedDay = 1;
-let schedules = {};
-let savedPassword = "";
-let pendingAction = null;
-let saving = false;
-let cachedRates = null;
+let selectedDay = 1, schedules = {}, savedPassword = "", pendingAction = null, saving = false, cachedRates = null;
 
 function callScript(params) {
   return new Promise((resolve, reject) => {
@@ -205,7 +182,7 @@ function renderSchedules() {
         <div class="schedule-time">${item.time}</div>
         <div class="schedule-info">
           <div class="schedule-activity">${item.activity}</div>
-          ${item.location ? `<div class="schedule-location">📍 ${item.location}</div>` : ""}
+          ${item.location ? `<div class="schedule-location"><a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.location)}" target="_blank" style="color:#9e8570;text-decoration:none;">📍 ${item.location} ↗</a></div>` : ""}
         </div>
         <button class="schedule-delete" data-id="${item.id}">✕</button>
       </div>`).join("");
@@ -213,6 +190,25 @@ function renderSchedules() {
       btn.addEventListener("click", () => handleDelete(btn.dataset.id));
     });
   }
+  updateMap();
+}
+
+function updateMap() {
+  const items = (schedules[selectedDay] || []).filter(i => i.location);
+  const mapDiv = document.getElementById("day-map");
+  const iframe = document.getElementById("map-iframe");
+  if (items.length === 0) {
+    mapDiv.style.display = "none";
+    return;
+  }
+  mapDiv.style.display = "block";
+  // 用第一個地點為中心，所有地點用逗號連接搜尋
+  const query = items.map(i => i.location).join("|");
+  const firstLocation = encodeURIComponent(items[0].location + " 沖繩");
+  iframe.src = `https://www.openstreetmap.org/export/embed.html?bbox=127.6,26.0,128.3,26.8&layer=mapnik&marker=${firstLocation}`;
+  // 用 Google Maps 靜態搜尋替代
+  const allLocations = encodeURIComponent(items.map(i => i.location).join(" "));
+  iframe.src = `https://maps.google.com/maps?q=${allLocations}&output=embed&z=13`;
 }
 
 function updateDayCard() {
@@ -296,12 +292,7 @@ function openModal() {
   document.getElementById("modal-overlay").classList.add("show");
   setTimeout(() => document.getElementById("modal-password").focus(), 100);
 }
-
-function closeModal() {
-  document.getElementById("modal-overlay").classList.remove("show");
-  pendingAction = null;
-}
-
+function closeModal() { document.getElementById("modal-overlay").classList.remove("show"); pendingAction = null; }
 function confirmModal() {
   const pwd = document.getElementById("modal-password").value;
   if (!pwd) { showToast("請輸入密碼", "#c0705a"); return; }
@@ -350,6 +341,31 @@ function buildRateHtml(rates, updatedAt) {
   </div>`;
 }
 
+// ===== 寄送行前清單 =====
+async function sendChecklist() {
+  const email = document.getElementById("gmail-input").value.trim();
+  const resultEl = document.getElementById("gmail-result");
+  if (!email || !email.includes("@")) { resultEl.style.color = "#c0705a"; resultEl.textContent = "請輸入正確的 Gmail 地址"; return; }
+  const allItems = [
+    { id: "chk_luggage_0", text: "護照、錢包、現金與信用卡" },
+    { id: "chk_luggage_1", text: "衣物：夏季衣服、可攜帶一件薄外套" },
+    { id: "chk_luggage_2", text: "可攜帶各類泳具" },
+    { id: "chk_luggage_3", text: "3C：手機、行動電源、相機、轉接頭、充電線" },
+    { id: "chk_luggage_4", text: "肌膚保養：強保濕產品、護唇膏、防曬" },
+    { id: "chk_luggage_5", text: "個人藥品" },
+    { id: "chk_insurance_0", text: "旅平險/旅行不便險" },
+    { id: "chk_passport_0", text: "確保效期滿 6 個月以上" },
+  ];
+  const checked = allItems.filter(i => { const el = document.getElementById(i.id); return el && el.checked; }).map(i => "✅ " + i.text);
+  const unchecked = allItems.filter(i => { const el = document.getElementById(i.id); return el && !el.checked; }).map(i => "⬜ " + i.text);
+  resultEl.style.color = "#9e8570"; resultEl.textContent = "寄送中…";
+  try {
+    const json = await callScript({ action: "sendMail", to: email, subject: "琉球旅遊行前準備清單", checkedItems: checked.join("||"), uncheckedItems: unchecked.join("||") });
+    if (json.success) { resultEl.style.color = "#6b9e6b"; resultEl.textContent = "✓ 已寄送到 " + email; }
+    else { resultEl.style.color = "#c0705a"; resultEl.textContent = "❌ 寄送失敗：" + (json.error || "請稍後再試"); }
+  } catch (e) { resultEl.style.color = "#c0705a"; resultEl.textContent = "❌ 寄送失敗：" + e.message; }
+}
+
 // ===== Nav 按鈕內容 =====
 function getNavContent(name) {
   if (name === "機票資訊") {
@@ -378,22 +394,15 @@ function getNavContent(name) {
   }
 
   if (name === "匯率換算") {
-    if (cachedRates) {
-      return buildRateHtml(cachedRates, null);
-    }
+    if (cachedRates) return buildRateHtml(cachedRates, null);
     (async () => {
       const info = document.getElementById("nav-info");
       try {
         const json = await callScript({ action: "rate" });
-        // 確認使用者還在看匯率頁才更新，避免覆蓋其他按鈕內容
         const activeBtn = document.querySelector(".nav-btn.active");
         if (!activeBtn || activeBtn.dataset.info !== "匯率換算") return;
-        if (json.success && json.rates) {
-          cachedRates = json.rates;
-          info.innerHTML = buildRateHtml(json.rates, json.updatedAt);
-        } else {
-          info.innerHTML = `<div style="color:#c0705a;font-size:13px;">❌ 匯率載入失敗，請稍後再試</div>`;
-        }
+        if (json.success && json.rates) { cachedRates = json.rates; info.innerHTML = buildRateHtml(json.rates, json.updatedAt); }
+        else { info.innerHTML = `<div style="color:#c0705a;font-size:13px;">❌ 匯率載入失敗，請稍後再試</div>`; }
       } catch (e) {
         const activeBtn = document.querySelector(".nav-btn.active");
         if (!activeBtn || activeBtn.dataset.info !== "匯率換算") return;
@@ -406,28 +415,24 @@ function getNavContent(name) {
   if (name === "行前準備") {
     return `<div style="background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(180,140,100,0.1)">
       <div style="font-size:18px;font-weight:700;color:#6b5240;margin-bottom:16px;">行前準備 Preparation</div>
-
       <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:10px;">行李清單</div>
-      ${["護照、錢包、現金與信用卡","衣物：夏季衣服、可攜帶一件薄外套","各類泳具","3C：手機、行動電源（注意要有Wh標示）、相機、轉接頭、充電線","肌膚保養：強保濕產品、護唇膏、防曬","個人藥品"].map((item, i) => `
+      ${["護照、錢包、現金與信用卡","衣物：夏季衣服、可攜帶一件薄外套","可攜帶各類泳具","3C：手機、行動電源（注意要有Wh標示）、相機、轉接頭、充電線","肌膚保養：強保濕產品、護唇膏、防曬","個人藥品"].map((item, i) => `
         <label style="display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid #f5f0eb;cursor:pointer;">
           <input type="checkbox" id="chk_luggage_${i}" style="margin-top:3px;width:16px;height:16px;accent-color:#b8966a;flex-shrink:0;" />
           <span style="font-size:13px;color:#5a4a3a;">${item}</span>
         </label>`).join("")}
-
       <div style="font-size:13px;font-weight:700;color:#b8966a;margin:16px 0 10px;">旅遊保險</div>
       ${["旅平險/旅行不便險"].map((item, i) => `
         <label style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:#fdf8f0;border-radius:8px;margin-bottom:6px;cursor:pointer;">
           <input type="checkbox" id="chk_insurance_${i}" style="width:16px;height:16px;accent-color:#b8966a;flex-shrink:0;" />
           <span style="font-size:13px;color:#5a4a3a;">${item}</span>
         </label>`).join("")}
-
       <div style="font-size:13px;font-weight:700;color:#b8966a;margin:16px 0 10px;">護照</div>
       ${["確保效期滿 6 個月以上"].map((item, i) => `
         <label style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:#fdf8f0;border-radius:8px;margin-bottom:6px;cursor:pointer;">
           <input type="checkbox" id="chk_passport_${i}" style="width:16px;height:16px;accent-color:#b8966a;flex-shrink:0;" />
           <span style="font-size:13px;color:#5a4a3a;">${item}</span>
         </label>`).join("")}
-
       <div style="margin-top:16px;padding-top:16px;border-top:1px solid #f0e8dc;">
         <div style="font-size:13px;font-weight:700;color:#7a5c3a;margin-bottom:8px;">📧 寄送清單到我的 Gmail</div>
         <div style="display:flex;gap:8px;">
@@ -438,7 +443,7 @@ function getNavContent(name) {
       </div>
     </div>`;
   }
-  
+
   if (name === "建議APP") {
     const apps = [
       { name: "乘換案內", desc: "日本大眾運輸查詢 App，可查詢電車、巴士、單軌列車路線、票價及轉乘資訊。", color: "#3a7bd5", letter: "乘", url: "https://apps.apple.com/tw/app/%E6%8F%9B%E4%B9%98%E6%A1%88%E5%85%A7-%E4%B8%AD%E6%96%87%E7%89%88-%E6%97%A5%E6%9C%AC%E6%97%85%E6%B8%B8%E4%BA%A4%E9%80%9A%E4%B9%98%E6%8F%9B%E6%A1%88%E5%85%A7/id1112129114" },
@@ -447,101 +452,64 @@ function getNavContent(name) {
       { name: "NAVITIME", desc: "日本旅遊導航 App，可規劃交通路線、景點行程，並提供觀光資訊與離線地圖。", color: "#00a0e9", letter: "N", url: "https://apps.apple.com/tw/app/navitime-%E5%9C%B0%E5%9B%B3%E3%81%A8%E4%B9%97%E6%8F%9B%E3%81%AE%E7%B7%8F%E5%90%88%E3%83%8A%E3%83%93/id365876050" },
       { name: "DeepL", desc: "翻譯軟體，支援多國語言即時翻譯與拍照翻譯。", color: "#0f2b46", letter: "D", url: "https://apps.apple.com/tw/app/deepl-translate/id1552407475" },
       { name: "TableCheck", desc: "日本很多熱門餐廳使用，比較容易預約高人氣店家。", color: "#e85d4a", letter: "T", url: "https://apps.apple.com/tw/app/tablecheck-%E9%A4%90%E5%BB%B3%E9%A0%90%E7%B4%84/id1183241149" },
-      { name: "Times Car", desc: "日本最大停車場集團 PARK24 推出的租車／共享汽車服務 App，可直接搜尋、預約及管理車輛。", color: "#00b050", letter: "T", url: "https://apps.apple.com/tw/app/%E3%82%BF%E3%82%A4%E3%83%A0%E3%82%BA%E3%82%AB%E3%83%BC/id825371148" },
+      { name: "Times Car", desc: "日本最大停車場集團 PARK24 推出的租車／共享汽車服務 App。", color: "#00b050", letter: "T", url: "https://apps.apple.com/tw/app/%E3%82%BF%E3%82%A4%E3%83%A0%E3%82%BA%E3%82%AB%E3%83%BC/id825371148" },
       { name: "Tabelog", desc: "日本最大美食評價平台，可搜尋附近餐廳、查看評分、菜單及用戶評論。", color: "#c8392b", letter: "食", url: "https://apps.apple.com/tw/app/tabelog-%E6%97%A5%E6%9C%AC%E9%A4%90%E5%BB%B3%E6%8E%A2%E7%B4%A2-%E8%A8%82%E4%BD%8D%E8%88%87%E8%A9%95%E5%83%B9%E5%85%A8%E6%96%B9%E4%BD%8D%E5%B9%B3%E5%8F%B0/id6752922875" },
-      { name: "Payke", desc: "專為外國旅客設計的購物 App，掃描商品條碼即可顯示中文介紹、成分及使用說明。", color: "#f5a623", letter: "P", url: "https://apps.apple.com/tw/app/payke-%E4%BD%BF%E7%94%A8%E5%84%AA%E6%83%A0%E5%88%B8-%E8%AE%93%E6%97%A5%E6%9C%AC%E6%97%85%E8%A1%8C%E6%9B%B4%E5%88%92%E7%AE%97-%E7%BF%BB%E8%AD%AF-%E8%A9%95%E5%83%B9/id1040452788" },
-      { name: "全支付", desc: "全支付在日本合作的是華泰銀行的即時牌價，扣款時會在 App 上顯示台幣金額。根據眾多網友實測，它的即時換算匯率常常比台灣銀行現鈔盤價、甚至比部分信用卡請款匯率還要漂亮。", color: "#fcc03f", letter: "全", url: "https://apps.apple.com/tw/app/全支付/id1605910655" },
+      { name: "Payke", desc: "掃描商品條碼即可顯示中文介紹、成分及使用說明。", color: "#f5a623", letter: "P", url: "https://apps.apple.com/tw/app/payke-%E4%BD%BF%E7%94%A8%E5%84%AA%E6%83%A0%E5%88%B8-%E8%AE%93%E6%97%A5%E6%9C%AC%E6%97%85%E8%A1%8C%E6%9B%B4%E5%88%92%E7%AE%97-%E7%BF%BB%E8%AD%AF-%E8%A9%95%E5%83%B9/id1040452788" },
+      { name: "全支付", desc: "全支付在日本合作的是華泰銀行的即時牌價，即時換算匯率常常比台灣銀行現鈔盤價還要漂亮。", color: "#fcc03f", letter: "全", url: "https://apps.apple.com/tw/app/全支付/id1605910655" },
     ];
     const cards = apps.map(app => `
-      <a href="${app.url}" target="_blank" style="display:flex;align-items:center;gap:14px;padding:14px;background:#fdf8f0;border-radius:12px;margin-bottom:10px;text-decoration:none;cursor:pointer;">
+      <a href="${app.url}" target="_blank" style="display:flex;align-items:center;gap:14px;padding:14px;background:#fdf8f0;border-radius:12px;margin-bottom:10px;text-decoration:none;">
         <div style="width:52px;height:52px;border-radius:14px;background:${app.color};display:flex;align-items:center;justify-content:center;font-size:${app.letter.length > 1 ? '13px' : '20px'};font-weight:700;color:#fff;flex-shrink:0;">${app.letter}</div>
-        <div style="flex:1;">
-          <div style="font-size:15px;font-weight:700;color:#5a4a3a;margin-bottom:3px;">${app.name}</div>
-          <div style="font-size:12px;color:#9e8570;line-height:1.5;">${app.desc}</div>
-        </div>
+        <div style="flex:1;"><div style="font-size:15px;font-weight:700;color:#5a4a3a;margin-bottom:3px;">${app.name}</div><div style="font-size:12px;color:#9e8570;line-height:1.5;">${app.desc}</div></div>
         <div style="color:#c9a87a;font-size:18px;flex-shrink:0;">›</div>
       </a>`).join("");
     return `<div style="background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(180,140,100,0.1)">
-      <div style="font-size:18px;font-weight:700;color:#6b5240;margin-bottom:16px;">建議 APP</div>
-      ${cards}
+      <div style="font-size:18px;font-weight:700;color:#6b5240;margin-bottom:16px;">建議 APP</div>${cards}</div>`;
+  }
+
+  if (name === "旅遊須知") {
+    return `<div style="background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(180,140,100,0.1)">
+      <div style="font-size:18px;font-weight:700;color:#6b5240;margin-bottom:16px;">旅遊注意事項</div>
+      <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">帶信與支付</div>
+      ${[""].map(t => `<div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
+      <div style="font-size:13px;font-weight:700;color:#b8966a;margin:14px 0 8px;">交通注意</div>
+      ${[""].map(t => `<div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
+      <div style="font-size:13px;font-weight:700;color:#b8966a;margin:14px 0 8px;">購物須知</div>
+      ${[""].map(t => `<div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
+      <div style="font-size:13px;font-weight:700;color:#b8966a;margin:14px 0 8px;">天氣與穿搭</div>
+      ${[""].map(t => `<div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
+      <div style="font-size:13px;font-weight:700;color:#b8966a;margin:14px 0 8px;">網路與通訊</div>
+      ${[""].map(t => `<div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
+      <div style="font-size:13px;font-weight:700;color:#b8966a;margin:14px 0 8px;">緊急聯絡</div>
+      ${["緊急電話：110（報警）、119（消防救護）","那霸（沖繩地區）：日本境內直撥：080-8056-0122，自台灣撥打：+81-80-8056-0122","外交部緊急聯絡中心國內專線：0800-085-095，海外付費專線：+886-800-085-095"].map(t => `
+        <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
     </div>`;
   }
-  
-  if (name === "旅遊須知") {
-  return `<div style="background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(180,140,100,0.1)">
-    <div style="font-size:18px;font-weight:700;color:#6b5240;margin-bottom:16px;">旅遊注意事項</div>
 
-    <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">帶信與支付</div>
-    ${[""].map(t => `
-      <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
-
-    <div style="font-size:13px;font-weight:700;color:#b8966a;margin:14px 0 8px;">交通注意</div>
-    ${[""].map(t => `
-      <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
-    
-
-    <div style="font-size:13px;font-weight:700;color:#b8966a;margin:14px 0 8px;">購物須知</div>
-    ${[""].map(t => `
-      <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
-
-    <div style="font-size:13px;font-weight:700;color:#b8966a;margin:14px 0 8px;">天氣與穿搭</div>
-    ${[""].map(t => `
-      <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
-
-    <div style="font-size:13px;font-weight:700;color:#b8966a;margin:14px 0 8px;">網路與通訊</div>
-    ${[""].map(t => `
-      <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
-
-    <div style="font-size:13px;font-weight:700;color:#b8966a;margin:14px 0 8px;">緊急聯絡</div>
-    ${["緊急電話：110（報警）、119（消防救護）","那霸（沖繩地區）：日本境內直撥：080-8056-0122，自台灣撥打：+81-80-8056-0122"," 外交部緊急聯絡中心國內專線： 0800-085-095 海外付費專線： (當地國國際冠碼) + 886-800-085-095 全球免付費專線： (當地國國際冠碼) + 800-0885-0885"].map(t => `
-      <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
-  </div>`;
-  }
-  
   if (name === "支付優惠") {
-  return `<div style="background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(180,140,100,0.1)">
-    <div style="font-size:18px;font-weight:700;color:#6b5240;margin-bottom:16px;">購物時可注意</div>
-
-    <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">在 RYUBO 使用台新信用卡</div>
-    ${["10% 免稅 ","消費滿額再享 5% 現金回饋 ","搭配 Richart 指定海外方案最高再享 3.3% 回饋"].map(t => `
-      <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
-    
-
-    <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">富邦 J 卡</div>
-    ${["日韓泰旅遊最高 6%","去日本基本必備，實體刷卡回饋高，各大藥妝店與百貨幾乎都有特約加碼。"].map(t => `
-      <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
-
-    <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">聯邦吉鶴卡</div>
-    ${["最高 4.5% 左右","主打日本在地消費加碼，且在日本直接支援 Apple Pay（感應 QUICPay），在沖繩的 LAWSON、FamilyMart 或驚安殿堂唐吉訶德，只要跟店員說 QUICPay " , " 手機嗶一下就結帳完成。 "].map(t => `
-      <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
-
-    <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">玉山 Unicard / 熊本熊卡</div>
-    ${["玉山 Unicard： 選擇日本指定商店特選方案，最高可刷到 14.5% 回饋（含新戶與一般加碼）。","玉山 熊本熊日圓雙幣卡： 國外消費免 1.5% 手續費，且在指定日本商店（唐吉訶德、Bic Camera、大國藥妝、松本清）消費最高享 8.5% 回饋。"].map(t => `
-      <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
-
-    <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">滙豐 Live+ 現金回饋卡</div>
-    ${["針對日本餐飲有 5.88% 的超高回饋！去沖繩吃石垣牛、阿古豬（Agu 豬）或燒肉，刷這張最補。"].map(t => `
-      <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
-
-   <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">全支付 × PayPay（最高 15% 回饋）</div>
-    ${["基本回饋 3.5%： 筆筆享 3.5% 全點回饋（單筆上限 30 點、每月上限 120 點，適合超商小額分次刷）。","銀行加碼 5%（週週賺）： 連結將來銀行或國泰世華帳戶付款，筆筆再加碼 5%（每週上限 100 全點）。","新戶加碼 5%： 註冊當月新戶筆筆加碼 5%（上限 100 點）。","即時匯率優勢： 採用華泰銀行每日即時牌價，通常匯率相當漂亮。"].map(t => `
-      <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
-
-    <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">街口支付 × PayPay（最高 10.5% ~ 12% 回饋）</div>
-    ${["街利存帳戶付款： 筆筆最高享 2.5% 街口幣回饋（依會員等級）。","台新街口聯名卡付款： 筆筆享 3.5% 街口幣回饋，額度高、上限寬鬆。","華南銀行帳戶付款： 筆筆享 5% 回饋（每月上限 50 街口幣，刷 1,000 元台幣封頂）。","特店折價券（最高 7%）： 出發前在街口 App 內先領取 Bic Camera、松本清等日本特店優惠券，疊加指定付款最高可衝到 10.5% ~ 12%。"].map(t => `
-      <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
-
-    <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">玉山 Wallet × PayPay（吃拉麵/小額神隊友）</div>
-    ${["PayPay 櫻花券現折 600 日圓： 每月 1 號可以在玉山 Wallet App 內領取「PayPay櫻花券」，在日本 PayPay 商店消費時選用，直接折抵 600 日圓（每月限額，記得提早領）。","綁定玉山熊本熊卡： 筆筆消費享 3.5% 現金回饋，歸戶每季上限 100 元台幣。"].map(t => `
-      <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
-
-    <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">全盈+ PAY × PayPay（新戶/特定月份最高 27% ~ 40%）</div>
-    ${["基本回饋 5.5%： 筆筆消費享 5.5% 全盈儲值金（單筆上限 50 元，每月上限 150 元）。","滿額送全家點數： 累積消費滿 1 萬元台幣，加碼贈送 30 萬點全家 Fa 點。","新戶再加碼 10%（上限 100 元）。"].map(t => `
-      <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
-    
-     </div>`;
+    return `<div style="background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(180,140,100,0.1)">
+      <div style="font-size:18px;font-weight:700;color:#6b5240;margin-bottom:16px;">購物時可注意</div>
+      <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">在 RYUBO 使用台新信用卡</div>
+      ${["10% 免稅","消費滿額再享 5% 現金回饋","搭配 Richart 指定海外方案最高再享 3.3% 回饋"].map(t => `<div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
+      <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">富邦 J 卡</div>
+      ${["日韓泰旅遊最高 6%","去日本基本必備，實體刷卡回饋高，各大藥妝店與百貨幾乎都有特約加碼。"].map(t => `<div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
+      <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">聯邦吉鶴卡</div>
+      ${["最高 4.5% 左右","主打日本在地消費加碼，且在日本直接支援 Apple Pay（感應 QUICPay），在沖繩的 LAWSON、FamilyMart 或驚安殿堂唐吉訶德，只要跟店員說 QUICPay，手機嗶一下就結帳完成。"].map(t => `<div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
+      <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">玉山 Unicard / 熊本熊卡</div>
+      ${["玉山 Unicard：選擇日本指定商店特選方案，最高可刷到 14.5% 回饋（含新戶與一般加碼）。","玉山熊本熊日圓雙幣卡：國外消費免 1.5% 手續費，且在指定日本商店（唐吉訶德、Bic Camera、大國藥妝、松本清）消費最高享 8.5% 回饋。"].map(t => `<div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
+      <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">滙豐 Live+ 現金回饋卡</div>
+      ${["針對日本餐飲有 5.88% 的超高回饋！去沖繩吃石垣牛、阿古豬（Agu 豬）或燒肉，刷這張最補。"].map(t => `<div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
+      <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">全支付 × PayPay（最高 15% 回饋）</div>
+      ${["基本回饋 3.5%：筆筆享 3.5% 全點回饋（單筆上限 30 點、每月上限 120 點）。","銀行加碼 5%（週週賺）：連結將來銀行或國泰世華帳戶付款，筆筆再加碼 5%（每週上限 100 全點）。","新戶加碼 5%：註冊當月新戶筆筆加碼 5%（上限 100 點）。","即時匯率優勢：採用華泰銀行每日即時牌價，通常匯率相當漂亮。"].map(t => `<div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
+      <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">街口支付 × PayPay（最高 10.5% ~ 12% 回饋）</div>
+      ${["街利存帳戶付款：筆筆最高享 2.5% 街口幣回饋（依會員等級）。","台新街口聯名卡付款：筆筆享 3.5% 街口幣回饋，額度高、上限寬鬆。","華南銀行帳戶付款：筆筆享 5% 回饋（每月上限 50 街口幣）。","特店折價券（最高 7%）：出發前在街口 App 內先領取 Bic Camera、松本清等日本特店優惠券，疊加指定付款最高可衝到 10.5% ~ 12%。"].map(t => `<div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
+      <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">玉山 Wallet × PayPay（吃拉麵/小額神隊友）</div>
+      ${["PayPay 櫻花券現折 600 日圓：每月 1 號可在玉山 Wallet App 內領取，在日本 PayPay 商店消費時選用，直接折抵 600 日圓（每月限額，記得提早領）。","綁定玉山熊本熊卡：筆筆消費享 3.5% 現金回饋，歸戶每季上限 100 元台幣。"].map(t => `<div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
+      <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">全盈+ PAY × PayPay（新戶/特定月份最高 27% ~ 40%）</div>
+      ${["基本回饋 5.5%：筆筆消費享 5.5% 全盈儲值金（單筆上限 50 元，每月上限 150 元）。","滿額送全家點數：累積消費滿 1 萬元台幣，加碼贈送 30 萬點全家 Fa 點。","新戶再加碼 10%（上限 100 元）。"].map(t => `<div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
+    </div>`;
   }
-  
+
   if (name === "退稅資訊") {
     return `<div style="background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(180,140,100,0.1)">
       <div style="font-size:18px;font-weight:700;color:#6b5240;margin-bottom:16px;">退稅資訊</div>
@@ -550,68 +518,10 @@ function getNavContent(name) {
         <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
     </div>`;
   }
-  
+
   if (name === "購物指南") return `<div style="font-size:13px;color:#7a5c3a;">購物指南的相關資訊測試中。</div>`;
 
   return `<div style="font-size:13px;color:#7a5c3a;">${name} 的相關資訊測試中。</div>`;
-}
-
- 
-
-// ===== 寄送行前清單到 Gmail =====
-async function sendChecklist() {
-  const email = document.getElementById("gmail-input").value.trim();
-  const resultEl = document.getElementById("gmail-result");
-  if (!email || !email.includes("@")) {
-    resultEl.style.color = "#c0705a";
-    resultEl.textContent = "請輸入正確的 Gmail 地址";
-    return;
-  }
-
-  // 收集勾選項目
-  const allItems = [
-    { id: "chk_luggage_0", text: "護照、錢包、現金與信用卡" },
-    { id: "chk_luggage_1", text: "衣物：夏季衣服、可帶一件薄外套" },
-    { id: "chk_luggage_2", text: "各類泳具" },
-    { id: "chk_luggage_3", text: "3C：手機、行動電源、相機、轉接頭、充電線" },
-    { id: "chk_luggage_4", text: "肌膚保養：強保濕產品、護唇膏、防曬" },
-    { id: "chk_luggage_5", text: "個人藥品" },
-    { id: "chk_insurance_0", text: "旅平險/旅行不便險" },
-    { id: "chk_passport_0", text: "確保效期滿 6 個月以上" },
-  ];
-
-  const checked = allItems.filter(item => {
-    const el = document.getElementById(item.id);
-    return el && el.checked;
-  }).map(item => "✅ " + item.text);
-
-  const unchecked = allItems.filter(item => {
-    const el = document.getElementById(item.id);
-    return el && !el.checked;
-  }).map(item => "⬜ " + item.text);
-
-  resultEl.style.color = "#9e8570";
-  resultEl.textContent = "寄送中…";
-
-  try {
-    const json = await callScript({
-      action: "sendMail",
-      to: email,
-      subject: "琉球旅遊行前準備清單",
-      checkedItems: checked.join("||"),
-      uncheckedItems: unchecked.join("||"),
-    });
-    if (json.success) {
-      resultEl.style.color = "#6b9e6b";
-      resultEl.textContent = "✓ 已寄送到 " + email;
-    } else {
-      resultEl.style.color = "#c0705a";
-      resultEl.textContent = "❌ 寄送失敗：" + (json.error || "請稍後再試");
-    }
-  } catch (e) {
-    resultEl.style.color = "#c0705a";
-    resultEl.textContent = "❌ 寄送失敗：" + e.message;
-  }
 }
 
 document.querySelectorAll(".nav-btn").forEach(btn => {
