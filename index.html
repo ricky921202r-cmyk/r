@@ -202,13 +202,8 @@ function updateMap() {
     return;
   }
   mapDiv.style.display = "block";
-  // 用第一個地點為中心，所有地點用逗號連接搜尋
-  const query = items.map(i => i.location).join("|");
   const firstLocation = encodeURIComponent(items[0].location + " 沖繩");
-  iframe.src = `https://www.openstreetmap.org/export/embed.html?bbox=127.6,26.0,128.3,26.8&layer=mapnik&marker=${firstLocation}`;
-  // 用 Google Maps 靜態搜尋替代
-  const allLocations = encodeURIComponent(items.map(i => i.location).join(" "));
-  iframe.src = `https://maps.google.com/maps?q=${allLocations}&output=embed&z=13`;
+  iframe.src = `https://maps.google.com/maps?q=${firstLocation}&output=embed&z=14`;
 }
 
 function updateDayCard() {
