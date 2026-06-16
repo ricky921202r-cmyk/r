@@ -465,25 +465,27 @@ function getNavContent(name) {
   if (name === "旅遊須知") {
     return `<div style="background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(180,140,100,0.1)">
       <div style="font-size:18px;font-weight:700;color:#6b5240;margin-bottom:16px;">旅遊注意事項</div>
-      
+      <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
+    
       <div style="font-size:13px;font-weight:700;color:#b8966a;margin-bottom:8px;">支付</div>
       ${["出發前先確認信用卡、提款卡是否能在日本使用，並準備一些日圓現金，因為部分店家、離島或小型店鋪不一定都能刷卡。若你常用行動支付，也要先確認在日本是否能正常使用。建議把卡片與現金分開放，並記錄緊急掛失方式。"].map(t => `
-      
+      <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
+  
       <div style="font-size:13px;font-weight:700;color:#b8966a;margin:14px 0 8px;">交通注意</div>
       ${["在沖繩移動時，常見選擇是租車、公車或計程車。其中租車最方便，能自由安排行程，但要特別注意日本是右駕、靠左行駛，以及當地交通規則，若打算自駕，出發前務必確認以下文件齊全：台灣駕照正本台灣駕照官方日文譯本（監理所核發）護照"].map(t => `
-      
-      
+      <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
+  
       <div style="font-size:13px;font-weight:700;color:#b8966a;margin:14px 0 8px;">購物須知</div>
       ${["購物時可先確認店家是否有免稅服務、退稅條件與付款方式。熱門商圈或觀光區雖然便利，但商品價格、營業時間和折扣規則可能和你預期不同。若有買藥妝、伴手禮或食品，也要注意攜帶回台灣的入境限制。"].map(t => `
-      
+      <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
         
       <div style="font-size:13px;font-weight:700;color:#b8966a;margin:14px 0 8px;">天氣與穿搭</div>
       ${["沖繩天氣偏熱、日照強，白天通常適合穿輕薄透氣的衣物，並搭配防曬用品。若你安排海邊、搭船或戶外活動，建議帶帽子、太陽眼鏡和薄外套。遇到雨季或天氣不穩時，也最好準備摺疊傘或輕便雨衣。"].map(t => `
-      
+      <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
         
       <div style="font-size:13px;font-weight:700;color:#b8966a;margin:14px 0 8px;">網路與通訊</div>
       ${["出發前可先準備日本可用的 eSIM、SIM 卡或 Wi‑Fi 分享器，避免到當地才臨時找網路。若你需要常查地圖、翻譯或叫車，穩定網路會很重要。也建議先下載離線地圖，萬一訊號不穩時仍能使用。"].map(t => `
-      
+      <div style="background:#fdf8f0;border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:13px;color:#5a4a3a;">${t}</div>`).join("")}
         
       <div style="font-size:13px;font-weight:700;color:#b8966a;margin:14px 0 8px;">緊急聯絡</div>
       ${["緊急電話：110（報警）、119（消防救護）","那霸（沖繩地區）：日本境內直撥：080-8056-0122，自台灣撥打：+81-80-8056-0122","外交部緊急聯絡中心國內專線：0800-085-095，海外付費專線：+886-800-085-095"].map(t => `
