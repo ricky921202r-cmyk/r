@@ -193,7 +193,7 @@ function renderSchedules() {
   updateMap();
 }
 
-function updateMap() {
+async function updateMap() {
   const items = (schedules[selectedDay] || []).filter(i => i.location);
   const mapDiv = document.getElementById("day-map");
   const iframe = document.getElementById("map-iframe");
@@ -202,11 +202,27 @@ function updateMap() {
     return;
   }
   mapDiv.style.display = "block";
-  // 搜尋第一個地點，會自動顯示紅色標記
+ 
+  // 用 Nominatim 查詢第一個地點的經緯度
   const query = encodeURIComponent(items[0].location + " 沖繩 日本");
-  iframe.src = `https://maps.google.com/maps?q=${query}&output=embed&z=16&hl=zh-TW`;
+  try {
+    const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${query}&format=json&limit=1`, {
+      headers: { "Accept-Language": "zh-TW" }
+    });
+    const data = await res.json();
+    if (data && data.length > 0) {
+      const lat = parseFloat(data[0].lat);
+      const lon = parseFloat(data[0].lon);
+      // 用 OpenStreetMap embed 並標記座標
+      iframe.src = `https://www.openstreetmap.org/export/embed.html?bbox=${lon-0.01},${lat-0.01},${lon+0.01},${lat+0.01}&layer=mapnik&marker=${lat},${lon}`;
+    } else {
+      // 查不到就用 Google Maps 搜尋
+      iframe.src = `https://maps.google.com/maps?q=${query}&output=embed&z=16&hl=zh-TW`;
+    }
+  } catch(e) {
+    iframe.src = `https://maps.google.com/maps?q=${query}&output=embed&z=16&hl=zh-TW`;
+  }
 }
-
 function updateDayCard() {
   const d = dayData[selectedDay];
   const dates = ["8/11","8/12","8/13","8/14","8/15"];
