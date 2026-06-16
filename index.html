@@ -202,8 +202,9 @@ function updateMap() {
     return;
   }
   mapDiv.style.display = "block";
-  const firstLocation = encodeURIComponent(items[0].location + " 沖繩");
-  iframe.src = `https://maps.google.com/maps?q=${firstLocation}&output=embed&z=14`;
+  // 搜尋第一個地點，會自動顯示紅色標記
+  const query = encodeURIComponent(items[0].location + " 沖繩 日本");
+  iframe.src = `https://maps.google.com/maps?q=${query}&output=embed&z=16&hl=zh-TW`;
 }
 
 function updateDayCard() {
