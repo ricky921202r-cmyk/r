@@ -536,8 +536,75 @@ function getNavContent(name) {
     </div>`;
   }
 
-  if (name === "購物指南") return `<div style="font-size:13px;color:#7a5c3a;">購物指南的相關資訊測試中。</div>`;
-
+  if (name === "購物指南") {
+    const sections = [
+      {
+        title: "🍬 零食",
+        shops: [
+          { rank: "①", name: "唐吉訶德（Donki）", stars: "★★★★★", items: ["KitKat 地區限定","薯條三兄弟","Royce 巧克力","Calbee 洋芋片","UHA 軟糖"], note: "24小時（部分店舖）・大包裝多・適合大量掃貨" },
+          { rank: "②", name: "AEON Mall Okinawa Rycom", stars: "★★★★★", items: ["超市區種類超多","價格常比觀光區便宜","可順便逛服飾、美食、Pokemon Store"], note: "" },
+        ]
+      },
+      {
+        title: "🎁 伴手禮",
+        shops: [
+          { rank: "①", name: "國際通（必逛）", stars: "★★★★★", items: ["紅芋塔","雪鹽餅乾","黑糖","Chinsuko 金楚糕","琉球玻璃"], note: "" },
+          { rank: "②", name: "琉貿百貨 RYUBO", stars: "★★★★★", items: ["琉球玻璃","泡盛酒","在地甜點","精品伴手禮"], note: "許多高質感沖繩限定商品" },
+        ]
+      },
+      {
+        title: "💊 藥妝",
+        shops: [
+          { rank: "①", name: "Daikoku Drug Chatan American Village", stars: "★★★★★", items: ["EVE止痛藥","合利他命","小林製藥系列","面膜","防曬乳"], note: "營業到晚上約23點" },
+          { rank: "②", name: "Drugstore Mori Chatan", stars: "★★★★★", items: ["價格常比 Donki 更便宜","當地人常去"], note: "" },
+        ]
+      },
+      {
+        title: "🤖 玩具・公仔・模型",
+        shops: [
+          { rank: "①", name: "AEON Mall Okinawa Rycom", stars: "★★★★★", items: ["寶可夢","鋼彈","TOMICA","LEGO"], note: "內有 Toys'R'Us" },
+          { rank: "②", name: "Modeler's Core", stars: "★★★★★", items: ["Gunpla 鋼彈","Tamiya","工具","顏料"], note: "沖繩非常有名的模型店" },
+          { rank: "③", name: "Ghost Village Action Figure Shop", stars: "★★★★★", items: ["海賊王","七龍珠","美少女模型","二手公仔"], note: "" },
+        ]
+      },
+      {
+        title: "🍶 酒類",
+        shops: [
+          { rank: "①", name: "Liquor Mountain", stars: "★★★★★", items: ["山崎","白州","響","泡盛酒"], note: "種類很多" },
+          { rank: "②", name: "Aeon Liquor Rycom", stars: "★★★★★", items: ["泡盛","日本威士忌","梅酒"], note: "價格不錯" },
+        ]
+      },
+      {
+        title: "🪆 紀念品",
+        shops: [
+          { rank: "①", name: "國際通", stars: "★★★★★", items: ["Shisa 風獅爺","冰箱磁鐵","T-shirt","琉球玻璃","明信片"], note: "最有沖繩味" },
+          { rank: "②", name: "OKINAWA MARKET", stars: "★★★★", items: ["風格偏美式＋沖繩特色"], note: "位於美國村" },
+        ]
+      },
+    ];
+ 
+    const html = sections.map(sec => `
+      <div style="margin-bottom:20px;">
+        <div style="font-size:15px;font-weight:700;color:#6b5240;margin-bottom:10px;">${sec.title}</div>
+        ${sec.shops.map(shop => `
+          <div style="background:#fdf8f0;border-radius:12px;padding:14px;margin-bottom:10px;">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+              <span style="font-size:13px;color:#b8966a;font-weight:700;">${shop.rank}</span>
+              <span style="font-size:14px;font-weight:700;color:#5a4a3a;">${shop.name}</span>
+              <span style="font-size:11px;color:#f5a623;margin-left:auto;">${shop.stars}</span>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:${shop.note ? '8px' : '0'};">
+              ${shop.items.map(item => `<span style="background:#fff;border:1px solid #e0cdb4;border-radius:20px;padding:3px 10px;font-size:12px;color:#7a5c3a;">${item}</span>`).join("")}
+            </div>
+            ${shop.note ? `<div style="font-size:12px;color:#9e8570;margin-top:4px;">💡 ${shop.note}</div>` : ""}
+          </div>`).join("")}
+      </div>`).join("");
+ 
+    return `<div style="background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(180,140,100,0.1)">
+      <div style="font-size:18px;font-weight:700;color:#6b5240;margin-bottom:16px;">購物指南 🛍️</div>
+      ${html}
+    </div>`;
+  }
   return `<div style="font-size:13px;color:#7a5c3a;">${name} 的相關資訊測試中。</div>`;
 }
 
