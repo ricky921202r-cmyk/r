@@ -168,6 +168,13 @@ function showToast(msg, color = "#6b9e6b") {
   setTimeout(() => t.style.display = "none", 3000);
 }
 
+  // 把時間字串轉成分鐘數方便排序，支援 "17:00開門" 這種帶文字後綴的格式
+function timeToMinutes(timeStr) {
+  const match = String(timeStr).match(/(\d{1,2}):(\d{2})/);
+  if (!match) return 9999; // 抓不到時間格式的排到最後
+  return parseInt(match[1], 10) * 60 + parseInt(match[2], 10);
+}
+  
 function renderSchedules() {
   const list = document.getElementById("schedule-list");
   const emptyMsg = document.getElementById("empty-msg");
