@@ -250,13 +250,15 @@ async function updateMap() {
     if (layer instanceof L.Marker) dayMap.removeLayer(layer);
   });
 
-  // 依序查詢每個地點的座標（平行查詢加速）
-  const results = await Promise.all(items.map(async item => {
+  // 依序查詢每個地點的座標，有快取直接用，沒快取等 300ms 再查下一筆避免 rate limit
+  const results = [];
+  for (const item of items) {
+    if (!geocodeCache[item.location]) await new Promise(r => setTimeout(r, 300));
     const coord = await geocodeLocation(item.location);
-    return coord ? { ...item, ...coord } : null;
-  }));
+    results.push(coord ? { ...item, ...coord } : null);
+  }
   const validResults = results.filter(Boolean);
-
+ 
   if (validResults.length === 0) {
     mapDiv.style.display = "none";
     return;
