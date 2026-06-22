@@ -258,7 +258,7 @@ async function updateMap() {
     results.push(coord ? { ...item, ...coord } : null);
   }
   const validResults = results.filter(Boolean);
- 
+
   if (validResults.length === 0) {
     mapDiv.style.display = "none";
     return;
