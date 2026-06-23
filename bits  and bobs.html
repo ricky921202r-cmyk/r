@@ -1,0 +1,732 @@
+cat > /mnt/user-data/outputs/index.html << 'HTMLEOF'
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>小盒子 Bits and Bobs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Noto+Serif+TC:wght@300;400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream:   #F7F3EE;
+      --bone:    #EDE6DB;
+      --blush:   #E8C9BB;
+      --rose:    #C9897A;
+      --bark:    #7A5C4F;
+      --ink:     #2C2018;
+      --white:   #FDFAF7;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', 'Noto Serif TC', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px;
+      height: 64px;
+      background: rgba(247,243,238,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,137,122,0.15);
+      transition: box-shadow 0.3s;
+    }
+    nav.scrolled { box-shadow: 0 2px 20px rgba(122,92,79,0.08); }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+      text-decoration: none;
+      display: flex; flex-direction: column; line-height: 1.1;
+    }
+    .nav-logo span { font-size: 10px; letter-spacing: 0.18em; color: var(--bark); font-family: 'DM Sans', sans-serif; font-weight: 300; text-transform: uppercase; }
+
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--bark); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--rose); }
+
+    .nav-icons { display: flex; gap: 18px; align-items: center; }
+    .nav-icons button {
+      background: none; border: none; cursor: pointer;
+      color: var(--bark); font-size: 18px; padding: 4px;
+      transition: color 0.2s;
+    }
+    .nav-icons button:hover { color: var(--rose); }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+    .hamburger span { display: block; width: 22px; height: 1.5px; background: var(--bark); transition: all 0.3s; }
+
+    /* ── HERO ── */
+    .hero {
+      margin-top: 64px;
+      height: calc(100vh - 64px);
+      min-height: 560px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+    }
+
+    .hero-left {
+      background: var(--bone);
+      display: flex; align-items: flex-end;
+      padding: 64px 56px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Signature element: a large ghost letter as ambient texture */
+    .hero-left::before {
+      content: "B";
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 480px;
+      font-weight: 300;
+      color: rgba(201,137,122,0.08);
+      position: absolute;
+      top: -60px; right: -40px;
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .hero-text { position: relative; z-index: 1; }
+    .hero-eyebrow {
+      font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--rose); margin-bottom: 20px;
+      font-family: 'DM Sans', sans-serif; font-weight: 300;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(48px, 5.5vw, 80px);
+      font-weight: 300;
+      line-height: 1.08;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin-bottom: 28px;
+    }
+    .hero-title em { font-style: italic; color: var(--rose); }
+    .hero-desc {
+      font-size: 14px; color: var(--bark); line-height: 1.8;
+      max-width: 320px; margin-bottom: 40px;
+      font-weight: 300;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--ink); color: var(--cream);
+      padding: 14px 32px;
+      font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+      text-decoration: none; border: none; cursor: pointer;
+      transition: background 0.25s, transform 0.2s;
+    }
+    .btn-primary:hover { background: var(--bark); transform: translateY(-1px); }
+    .btn-primary svg { transition: transform 0.2s; }
+    .btn-primary:hover svg { transform: translateX(4px); }
+
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 10px;
+      border: 1px solid var(--bark); color: var(--bark);
+      padding: 13px 28px;
+      font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+      text-decoration: none; cursor: pointer; background: none;
+      transition: all 0.25s;
+    }
+    .btn-outline:hover { background: var(--bark); color: var(--cream); }
+
+    .hero-right {
+      background: var(--blush);
+      position: relative; overflow: hidden;
+    }
+    .hero-right img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: saturate(0.85);
+      transition: transform 6s ease;
+    }
+    .hero-right:hover img { transform: scale(1.03); }
+
+    .hero-badge {
+      position: absolute; bottom: 40px; left: -20px;
+      background: var(--white);
+      padding: 16px 24px;
+      font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--bark);
+      box-shadow: 0 4px 24px rgba(122,92,79,0.12);
+    }
+    .hero-badge strong { display: block; font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 400; color: var(--ink); letter-spacing: 0; text-transform: none; margin-bottom: 2px; }
+
+    /* ── MARQUEE ── */
+    .marquee-wrap {
+      overflow: hidden; background: var(--rose); padding: 14px 0;
+    }
+    .marquee-track {
+      display: flex; gap: 0; white-space: nowrap;
+      animation: marquee 28s linear infinite;
+    }
+    .marquee-track span {
+      font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--white); padding: 0 32px;
+      font-family: 'DM Sans', sans-serif; font-weight: 300;
+    }
+    .marquee-track span::after { content: "·"; margin-left: 32px; }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ── SECTION COMMON ── */
+    section { padding: 96px 40px; }
+    .section-label {
+      font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase;
+      color: var(--rose); margin-bottom: 16px;
+      font-family: 'DM Sans', sans-serif; font-weight: 300;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(32px, 3.5vw, 52px);
+      font-weight: 300; line-height: 1.1;
+      color: var(--ink); margin-bottom: 20px;
+    }
+    .section-title em { font-style: italic; color: var(--rose); }
+    .section-sub {
+      font-size: 14px; color: var(--bark); line-height: 1.8;
+      font-weight: 300; max-width: 480px;
+    }
+
+    /* ── NEW ARRIVALS ── */
+    .arrivals { background: var(--white); }
+    .arrivals-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 56px; flex-wrap: wrap; gap: 20px;
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+    .product-card { cursor: pointer; }
+    .product-img {
+      aspect-ratio: 3/4;
+      background: var(--bone);
+      overflow: hidden;
+      margin-bottom: 16px;
+      position: relative;
+    }
+    .product-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; filter: saturate(0.9); }
+    .product-card:hover .product-img img { transform: scale(1.05); }
+    .product-tag {
+      position: absolute; top: 14px; left: 14px;
+      background: var(--rose); color: var(--white);
+      font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase;
+      padding: 5px 10px; font-family: 'DM Sans', sans-serif;
+    }
+    .product-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px; font-weight: 400; color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .product-type { font-size: 11px; color: var(--bark); letter-spacing: 0.08em; margin-bottom: 8px; font-weight: 300; }
+    .product-price { font-size: 14px; color: var(--rose); font-weight: 400; }
+
+    /* ── SERVICES ── */
+    .services { background: var(--cream); }
+    .services-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 2px; margin-top: 64px;
+    }
+    .service-card {
+      background: var(--bone); padding: 56px 48px;
+      position: relative; overflow: hidden;
+      transition: background 0.3s;
+    }
+    .service-card:hover { background: var(--blush); }
+    .service-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 64px; font-weight: 300;
+      color: rgba(201,137,122,0.2); line-height: 1;
+      margin-bottom: 24px;
+    }
+    .service-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px; font-weight: 400; color: var(--ink);
+      margin-bottom: 12px;
+    }
+    .service-en { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--rose); margin-bottom: 16px; font-weight: 300; }
+    .service-desc { font-size: 13px; color: var(--bark); line-height: 1.8; font-weight: 300; max-width: 320px; }
+
+    /* ── ABOUT STRIP ── */
+    .about-strip {
+      background: var(--ink); color: var(--cream);
+      padding: 96px 40px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+    }
+    .about-strip .section-label { color: var(--blush); }
+    .about-strip .section-title { color: var(--cream); }
+    .about-strip .section-title em { color: var(--blush); }
+    .about-strip .section-sub { color: rgba(237,230,219,0.7); max-width: 100%; }
+    .about-right { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+    .about-stat {
+      background: rgba(255,255,255,0.05);
+      padding: 36px 28px;
+    }
+    .about-stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 52px; font-weight: 300; color: var(--blush);
+      line-height: 1; margin-bottom: 8px;
+    }
+    .about-stat-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(237,230,219,0.5); font-weight: 300; }
+
+    /* ── LOOKBOOK ── */
+    .lookbook { background: var(--bone); padding: 96px 40px; }
+    .lookbook-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 48px; flex-wrap: wrap; gap: 20px; }
+    .lookbook-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 4px;
+    }
+    .look-item { background: var(--blush); overflow: hidden; cursor: pointer; }
+    .look-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; filter: saturate(0.85); }
+    .look-item:hover img { transform: scale(1.04); }
+    .look-item:first-child { grid-row: span 2; aspect-ratio: auto; min-height: 480px; }
+    .look-item:not(:first-child) { aspect-ratio: 1; }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials { background: var(--white); text-align: center; padding: 96px 40px; }
+    .testimonials .section-label { display: block; }
+    .testimonials .section-title { margin: 0 auto 56px; }
+    .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; text-align: left; }
+    .testi-card { padding: 40px 36px; background: var(--cream); }
+    .testi-stars { color: var(--rose); font-size: 14px; letter-spacing: 4px; margin-bottom: 20px; }
+    .testi-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px; font-weight: 400; line-height: 1.6;
+      color: var(--ink); margin-bottom: 24px; font-style: italic;
+    }
+    .testi-name { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bark); font-weight: 300; }
+
+    /* ── NEWSLETTER ── */
+    .newsletter {
+      background: var(--blush); text-align: center; padding: 96px 40px;
+    }
+    .newsletter .section-title { font-size: clamp(28px, 3vw, 44px); margin-bottom: 12px; }
+    .newsletter p { font-size: 14px; color: var(--bark); margin-bottom: 40px; font-weight: 300; }
+    .newsletter-form { display: flex; gap: 0; max-width: 440px; margin: 0 auto; }
+    .newsletter-form input {
+      flex: 1; padding: 16px 20px;
+      border: 1px solid rgba(122,92,79,0.3); border-right: none;
+      font-size: 13px; color: var(--ink); background: var(--white);
+      outline: none; font-family: inherit;
+    }
+    .newsletter-form input::placeholder { color: rgba(122,92,79,0.4); }
+    .newsletter-form button {
+      padding: 16px 28px; background: var(--ink); color: var(--cream);
+      border: none; cursor: pointer; font-size: 11px;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      font-family: inherit; transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .newsletter-form button:hover { background: var(--bark); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink); color: rgba(237,230,219,0.6);
+      padding: 64px 40px 32px;
+    }
+    .footer-top {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px; margin-bottom: 64px;
+    }
+    .footer-brand .nav-logo { color: var(--cream); margin-bottom: 16px; display: block; }
+    .footer-brand .nav-logo span { color: var(--blush); }
+    .footer-brand p { font-size: 13px; line-height: 1.8; max-width: 260px; font-weight: 300; }
+    .footer-col h4 { font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--blush); margin-bottom: 20px; font-weight: 300; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col a { font-size: 13px; color: rgba(237,230,219,0.5); text-decoration: none; transition: color 0.2s; }
+    .footer-col a:hover { color: var(--cream); }
+    .footer-bottom {
+      border-top: 1px solid rgba(237,230,219,0.1);
+      padding-top: 24px;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+    }
+    .footer-bottom p { font-size: 12px; }
+    .social-links { display: flex; gap: 20px; }
+    .social-links a { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(237,230,219,0.4); text-decoration: none; transition: color 0.2s; }
+    .social-links a:hover { color: var(--blush); }
+
+    /* ── MOBILE MENU ── */
+    .mobile-menu {
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: var(--white); flex-direction: column;
+      padding: 24px 32px; justify-content: center;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu-close {
+      position: absolute; top: 20px; right: 32px;
+      background: none; border: none; font-size: 24px;
+      color: var(--bark); cursor: pointer;
+    }
+    .mobile-menu ul { list-style: none; display: flex; flex-direction: column; gap: 28px; }
+    .mobile-menu a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px; font-weight: 300; color: var(--ink);
+      text-decoration: none; letter-spacing: 0.02em;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .hero { grid-template-columns: 1fr; height: auto; }
+      .hero-left { padding: 56px 28px; min-height: 60vw; }
+      .hero-right { display: none; }
+      .product-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+      .services-grid { grid-template-columns: 1fr; }
+      .about-strip { grid-template-columns: 1fr; gap: 48px; }
+      .lookbook-grid { grid-template-columns: 1fr 1fr; }
+      .lookbook-grid .look-item:first-child { grid-column: span 2; grid-row: span 1; min-height: 280px; }
+      .testi-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+      section { padding: 64px 24px; }
+      .lookbook { padding: 64px 24px; }
+      .about-strip { padding: 64px 24px; }
+      .newsletter { padding: 64px 24px; }
+    }
+
+    @media (max-width: 560px) {
+      .product-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .footer-top { grid-template-columns: 1fr; }
+      .newsletter-form { flex-direction: column; }
+      .newsletter-form input { border-right: 1px solid rgba(122,92,79,0.3); border-bottom: none; }
+      .about-right { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .marquee-track { animation: none; }
+      * { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <a href="#" class="nav-logo">小盒子<span>Bits and Bobs</span></a>
+  <ul class="nav-links">
+    <li><a href="#shop">Shop</a></li>
+    <li><a href="#services">服務</a></li>
+    <li><a href="#lookbook">Lookbook</a></li>
+    <li><a href="#about">關於我們</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-icons">
+    <button aria-label="搜尋">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+    </button>
+    <button aria-label="購物車">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+    </button>
+    <button class="hamburger" aria-label="選單" id="hamburger-btn">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobile-menu">
+  <button class="mobile-menu-close" id="menu-close">✕</button>
+  <ul>
+    <li><a href="#shop">Shop</a></li>
+    <li><a href="#services">服務</a></li>
+    <li><a href="#lookbook">Lookbook</a></li>
+    <li><a href="#about">關於我們</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</div>
+
+<!-- HERO -->
+<section class="hero" aria-label="主視覺">
+  <div class="hero-left">
+    <div class="hero-text">
+      <p class="hero-eyebrow">訂製 · 原創 · 手作</p>
+      <h1 class="hero-title">每一件，<br>都是<em>獨有</em>的<br>你</h1>
+      <p class="hero-desc">從訂製改衣到原創設計，小盒子工作室為你打造真正屬於自己的衣服。</p>
+      <div style="display:flex; gap:16px; flex-wrap:wrap;">
+        <a href="#shop" class="btn-primary">
+          探索系列
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#services" class="btn-outline">了解服務</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&auto=format&fit=crop&q=80" alt="服飾工作室主視覺" />
+    <div class="hero-badge">
+      <strong>2024 新系列</strong>
+      現已上架
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap" aria-hidden="true">
+  <div class="marquee-track">
+    <span>訂製改衣</span><span>原創設計</span><span>手工縫製</span>
+    <span>Custom Tailoring</span><span>Original Design</span><span>Handcrafted</span>
+    <span>訂製改衣</span><span>原創設計</span><span>手工縫製</span>
+    <span>Custom Tailoring</span><span>Original Design</span><span>Handcrafted</span>
+    <span>訂製改衣</span><span>原創設計</span><span>手工縫製</span>
+    <span>Custom Tailoring</span><span>Original Design</span><span>Handcrafted</span>
+  </div>
+</div>
+
+<!-- NEW ARRIVALS -->
+<section class="arrivals" id="shop">
+  <div class="arrivals-header">
+    <div>
+      <p class="section-label">New Arrivals</p>
+      <h2 class="section-title">最新上架</h2>
+    </div>
+    <a href="#shop" class="btn-outline">查看全部</a>
+  </div>
+  <div class="product-grid">
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&auto=format&fit=crop&q=80" alt="奶油色褶裙" />
+        <span class="product-tag">New</span>
+      </div>
+      <p class="product-name">奶油褶裙</p>
+      <p class="product-type">Pleat Skirt · 原創設計</p>
+      <p class="product-price">NT$ 2,800</p>
+    </div>
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1594938298603-c8148c4b4357?w=600&auto=format&fit=crop&q=80" alt="寬版亞麻上衣" />
+        <span class="product-tag">限量</span>
+      </div>
+      <p class="product-name">亞麻寬版上衣</p>
+      <p class="product-type">Linen Top · 原創設計</p>
+      <p class="product-price">NT$ 2,200</p>
+    </div>
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1551163943-3f7253a97845?w=600&auto=format&fit=crop&q=80" alt="粉米色洋裝" />
+      </div>
+      <p class="product-name">粉米洋裝</p>
+      <p class="product-type">Midi Dress · 原創設計</p>
+      <p class="product-price">NT$ 3,600</p>
+    </div>
+    <div class="product-card">
+      <div class="product-img">
+        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=600&auto=format&fit=crop&q=80" alt="訂製外套" />
+        <span class="product-tag">訂製</span>
+      </div>
+      <p class="product-name">訂製外套</p>
+      <p class="product-type">Tailored Jacket · 訂製服務</p>
+      <p class="product-price">NT$ 起 5,800</p>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div style="max-width:600px;">
+    <p class="section-label">Our Services</p>
+    <h2 class="section-title">我們能為你<em>做什麼</em></h2>
+    <p class="section-sub">從一個想法到穿在身上的那一刻，小盒子陪你走過每一個步驟。</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <p class="service-num">一</p>
+      <p class="service-en">Custom Tailoring</p>
+      <h3 class="service-name">訂製改衣</h3>
+      <p class="service-desc">婚禮禮服、特殊場合服裝、日常改尺寸——帶著你的想法或布料來，我們一起完成。</p>
+    </div>
+    <div class="service-card">
+      <p class="service-num">二</p>
+      <p class="service-en">Original Design</p>
+      <h3 class="service-name">原創設計販售</h3>
+      <p class="service-desc">以自然色系、舒適剪裁為核心，每季少量推出原創設計單品，每一件都有自己的故事。</p>
+    </div>
+    <div class="service-card">
+      <p class="service-num">三</p>
+      <p class="service-en">Alteration</p>
+      <h3 class="service-name">修改縫補</h3>
+      <p class="service-desc">舊衣改造、破損修補、拉鍊更換——讓你喜愛的衣服再穿久一點。</p>
+    </div>
+    <div class="service-card">
+      <p class="service-num">四</p>
+      <p class="service-en">Style Consultation</p>
+      <h3 class="service-name">穿搭諮詢</h3>
+      <p class="service-desc">不確定什麼適合自己？預約一對一諮詢，我們幫你找到專屬的穿衣風格。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<div class="about-strip" id="about">
+  <div>
+    <p class="section-label">About Us</p>
+    <h2 class="section-title">小盒子，<br>裝著<em>不一樣</em><br>的你</h2>
+    <p class="section-sub" style="margin-top:20px; margin-bottom:36px;">小盒子工作室由設計師 ＿＿＿ 創立，相信每一件衣服都應該為穿它的人而生。我們不追求快時尚，只做你真正喜歡、願意長久穿著的衣服。</p>
+    <a href="#" class="btn-outline" style="border-color:rgba(237,230,219,0.4);color:rgba(237,230,219,0.7);">了解更多</a>
+  </div>
+  <div class="about-right">
+    <div class="about-stat">
+      <p class="about-stat-num">200<span style="font-size:28px;">+</span></p>
+      <p class="about-stat-label">訂製作品</p>
+    </div>
+    <div class="about-stat">
+      <p class="about-stat-num">5</p>
+      <p class="about-stat-label">年經驗</p>
+    </div>
+    <div class="about-stat">
+      <p class="about-stat-num">100<span style="font-size:28px;">%</span></p>
+      <p class="about-stat-label">手工縫製</p>
+    </div>
+    <div class="about-stat">
+      <p class="about-stat-num">♻</p>
+      <p class="about-stat-label">永續材質</p>
+    </div>
+  </div>
+</div>
+
+<!-- LOOKBOOK -->
+<section class="lookbook" id="lookbook">
+  <div class="lookbook-header">
+    <div>
+      <p class="section-label">Lookbook</p>
+      <h2 class="section-title">穿搭<em>靈感</em></h2>
+    </div>
+    <a href="#lookbook" class="btn-outline">查看全部</a>
+  </div>
+  <div class="lookbook-grid">
+    <div class="look-item">
+      <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=800&auto=format&fit=crop&q=80" alt="Lookbook 主圖" />
+    </div>
+    <div class="look-item">
+      <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=600&auto=format&fit=crop&q=80" alt="Lookbook 穿搭 2" />
+    </div>
+    <div class="look-item">
+      <img src="https://images.unsplash.com/photo-1485968579580-b6d095142e6e?w=600&auto=format&fit=crop&q=80" alt="Lookbook 穿搭 3" />
+    </div>
+    <div class="look-item">
+      <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=600&auto=format&fit=crop&q=80" alt="Lookbook 穿搭 4" />
+    </div>
+    <div class="look-item">
+      <img src="https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=600&auto=format&fit=crop&q=80" alt="Lookbook 穿搭 5" />
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <p class="section-label">Customer Stories</p>
+  <h2 class="section-title" style="max-width:480px; margin:0 auto 56px;">她們說的<em>話</em></h2>
+  <div class="testi-grid">
+    <div class="testi-card">
+      <p class="testi-stars">★★★★★</p>
+      <p class="testi-text">「婚禮禮服交給小盒子，從第一次討論到穿上那天，每個細節都照顧到了。謝謝你們。」</p>
+      <p class="testi-name">— Christine L. · 婚禮訂製</p>
+    </div>
+    <div class="testi-card">
+      <p class="testi-stars">★★★★★</p>
+      <p class="testi-text">「買了兩件原創設計，版型超舒服，顏色也很特別。終於找到自己喜歡的風格了。」</p>
+      <p class="testi-name">— 雅婷 · 原創系列</p>
+    </div>
+    <div class="testi-card">
+      <p class="testi-stars">★★★★★</p>
+      <p class="testi-text">「舊外套改短之後煥然一新，師傅技術很好，比我想像的還要漂亮。」</p>
+      <p class="testi-name">— Maggie W. · 改衣服務</p>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter">
+  <p class="section-label">Stay in Touch</p>
+  <h2 class="section-title">訂閱<em>最新消息</em></h2>
+  <p>新品上架、限量系列、工作室日誌——第一個知道。</p>
+  <form class="newsletter-form" onsubmit="return false;">
+    <input type="email" placeholder="your@email.com" aria-label="電子信箱" />
+    <button type="submit">訂閱</button>
+  </form>
+</section>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo">小盒子<span>Bits and Bobs</span></a>
+      <p>訂製改衣・原創設計・手工縫製<br>台灣 · 預約制工作室</p>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <ul>
+        <li><a href="#">新品上架</a></li>
+        <li><a href="#">原創系列</a></li>
+        <li><a href="#">限量單品</a></li>
+        <li><a href="#">Lookbook</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>服務</h4>
+      <ul>
+        <li><a href="#">訂製改衣</a></li>
+        <li><a href="#">修改縫補</a></li>
+        <li><a href="#">穿搭諮詢</a></li>
+        <li><a href="#">預約方式</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="#">關於我們</a></li>
+        <li><a href="#">聯絡方式</a></li>
+        <li><a href="#">常見問題</a></li>
+        <li><a href="#">退換貨政策</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 小盒子 Bits and Bobs. All rights reserved.</p>
+    <div class="social-links">
+      <a href="#">Instagram</a>
+      <a href="#">Facebook</a>
+      <a href="#">Line</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Nav scroll shadow
+  const nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // Mobile menu
+  const hamburger = document.getElementById('hamburger-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const menuClose = document.getElementById('menu-close');
+
+  hamburger.addEventListener('click', () => mobileMenu.classList.add('open'));
+  menuClose.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  mobileMenu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => mobileMenu.classList.remove('open'));
+  });
+</script>
+</body>
+</html>
+HTMLEOF
+echo "done"
