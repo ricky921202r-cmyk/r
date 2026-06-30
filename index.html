@@ -141,7 +141,7 @@
 </main>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbylePzU9bljF4Jdu24RT0oGxTE4b64_83f6ayYqcFEReCfM5MIk6WONItQxxu8e0PDf_w/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbySmiWA5LTzj6UFV1lacdyysTweQe_-UM4Flh5zBnXCmHxlgvti6J5Oxg_VQyfQJAyUHg/exec";
 const dayData = {
   1: { title: "抵達那霸", hotel: "住宿：Bremenhouse" },
   2: { title: "北部行程", hotel: "住宿：Bremenhouse" },
@@ -396,7 +396,7 @@ function buildRateHtml(rates, updatedAt) {
       <td class="rate-sell">${r.sell}</td>
     </tr>`).join("");
   return `<div class="rate-card">
-    <div class="rate-card-title">💱 台灣銀行即時匯率</div>
+    <div class="rate-card-title"> 台灣現金匯率換算</div>
     <div class="rate-updated">更新時間：${updatedAt || "載入中"}</div>
     <table class="rate-table">
       <thead><tr><th>幣別</th><th>買入</th><th>賣出</th></tr></thead>
