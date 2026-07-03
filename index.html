@@ -396,7 +396,7 @@ function buildRateHtml(rates, updatedAt) {
       <td class="rate-sell">${r.sell}</td>
     </tr>`).join("");
   return `<div class="rate-card">
-    <div class="rate-card-title"> 台灣現金匯率換算</div>
+    <div class="rate-card-title"> 玉山銀行現金匯率換算</div>
     <div class="rate-updated">更新時間：${updatedAt || "載入中"}</div>
     <table class="rate-table">
       <thead><tr><th>幣別</th><th>買入</th><th>賣出</th></tr></thead>
@@ -481,7 +481,7 @@ function getNavContent(name) {
         info.innerHTML = `<div style="color:#c0705a;font-size:13px;">❌ 載入失敗：${e.message}</div>`;
       }
     })();
-    return `<div class="rate-card"><div class="rate-loading">⏳ 載入台灣現金匯率中…</div></div>`;
+    return `<div class="rate-card"><div class="rate-loading">⏳ 載入玉山銀行現金匯率中…</div></div>`;
   }
 
   if (name === "行前準備") {
