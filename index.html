@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>鑽石旅遊團</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: Georgia, 'Noto Serif TC', serif; background-image: url('https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcTDkbLcQ4Qg2mx0DX_mR1yh2tJy1vJxCxGqIhEgI-HEUfsXleMSL-lABUILmGBkve4r4edccXlDQRoABItQ8Mdxe30&s=19'); background-size: cover; background-attachment: fixed; background-position: center; }
@@ -75,7 +74,6 @@
     .calc-row input { flex: 1; padding: 10px 12px; border: 1px solid #e0cdb4; border-radius: 10px; font-size: 14px; outline: none; font-family: inherit; color: #5a4a3a; }
     .calc-row select { padding: 10px 8px; border: 1px solid #e0cdb4; border-radius: 10px; font-size: 13px; outline: none; font-family: inherit; color: #5a4a3a; background: #fff; }
     .calc-result { background: #f0e8dc; border-radius: 10px; padding: 12px 14px; font-size: 14px; color: #6b5240; font-weight: 600; text-align: center; }
-    .leaflet-popup-content { font-family: inherit; font-size: 13px; }
   </style>
 </head>
 <body>
@@ -125,10 +123,6 @@
     <div id="loading-msg">載入中…</div>
     <div id="empty-msg" style="display:none">尚無行程，快來新增吧！</div>
     <div id="schedule-list"></div>
-    <div id="day-map" style="margin-top:12px;display:none;">
-      <div style="font-size:12px;color:#b09070;margin-bottom:6px;">📍 本日地點地圖</div>
-      <div id="map-iframe" style="width:100%;height:250px;border-radius:12px;overflow:hidden;"></div>
-    </div>
     <div id="add-form">
       <div class="form-title">🔐 新增行程（需密碼）</div>
       <input type="text" id="input-time" placeholder="時間（例如：14:30）" />
@@ -139,7 +133,6 @@
     </div>
   </div>
 </main>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzepdhp3CmqlYlNWezbnClL-SWfR4Gs7j-s_uAwwe2mIcxBg0Tqun428-6iWvWaQtneoQ/exec";
 const dayData = {
@@ -150,8 +143,6 @@ const dayData = {
   5: { title: "返回台灣", hotel: "" },
 };
 let selectedDay = 1, schedules = {}, savedPassword = "", pendingAction = null, saving = false, cachedRates = null;
-let dayMap = null; // Leaflet 地圖實例
-let geocodeCache = {}; // 地點文字 -> {lat, lon}，避免重複查詢
 
 function callScript(params) {
   return new Promise((resolve, reject) => {
@@ -202,85 +193,6 @@ function renderSchedules() {
       btn.addEventListener("click", () => handleDelete(btn.dataset.id));
     });
   }
-  updateMap();
-}
-
-// 查詢單一地點的經緯度（有快取，避免同個地點重複打 API）
-async function geocodeLocation(location) {
-  if (geocodeCache[location]) return geocodeCache[location];
-  const query = encodeURIComponent(location + " 沖繩 日本");
-  try {
-    const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${query}&format=json&limit=1`, {
-      headers: { "Accept-Language": "zh-TW" }
-    });
-    const data = await res.json();
-    if (data && data.length > 0) {
-      const result = { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon) };
-      geocodeCache[location] = result;
-      return result;
-    }
-  } catch (e) {
-    console.error("Geocode failed for", location, e);
-  }
-  return null;
-}
-
-async function updateMap() {
-  const items = (schedules[selectedDay] || []).filter(i => i.location);
-  const mapDiv = document.getElementById("day-map");
-  const mapContainer = document.getElementById("map-iframe");
-
-  if (items.length === 0) {
-    mapDiv.style.display = "none";
-    return;
-  }
-  mapDiv.style.display = "block";
-
-  // 初始化 Leaflet 地圖（只建立一次，之後重複利用）
-  if (!dayMap) {
-    dayMap = L.map(mapContainer);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap 貢獻者',
-      maxZoom: 19
-    }).addTo(dayMap);
-  }
-
-  // 清掉舊的標記
-  dayMap.eachLayer(layer => {
-    if (layer instanceof L.Marker) dayMap.removeLayer(layer);
-  });
-
-  // 依序查詢每個地點的座標，有快取直接用，沒快取等 300ms 再查下一筆避免 rate limit
-  const results = [];
-  for (const item of items) {
-    if (!geocodeCache[item.location]) await new Promise(r => setTimeout(r, 300));
-    const coord = await geocodeLocation(item.location);
-    results.push(coord ? { ...item, ...coord } : null);
-  }
-  const validResults = results.filter(Boolean);
-
-  if (validResults.length === 0) {
-    mapDiv.style.display = "none";
-    return;
-  }
-
-  // 幫每個地點加上標記，點擊可看名稱
-  const markers = validResults.map(r => {
-    const marker = L.marker([r.lat, r.lon]).addTo(dayMap);
-    marker.bindPopup(`<b>${r.time}</b> ${r.activity}<br>${r.location}`);
-    return marker;
-  });
-
-  // 讓地圖自動縮放到剛好包含所有標記
-  if (validResults.length === 1) {
-    dayMap.setView([validResults[0].lat, validResults[0].lon], 15);
-  } else {
-    const group = L.featureGroup(markers);
-    dayMap.fitBounds(group.getBounds().pad(0.2));
-  }
-
-  // 容器尺寸變動後 Leaflet 需要重新計算大小
-  setTimeout(() => dayMap.invalidateSize(), 100);
 }
 
 function updateDayCard() {
